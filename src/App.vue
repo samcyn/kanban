@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import AppButton from '@/components/AppButton.vue';
+import AppInput from '@/components/AppInput.vue';
 </script>
 <template>
   <h1>App</h1>
-  <app-button>Clear</app-button>
-  <app-button size="large" variant="secondary">Clear2</app-button>
+  <div class="w-80 m-auto dark">
+  <app-input label="Man's got bars" placeholder="hello it's me" :has-error="true" />
+  </div>
 </template>

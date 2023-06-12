@@ -17,7 +17,7 @@ export default {
         300: '#2b2c37',
         400: '#3e3f4e',
       },
-      gray: {
+      grey: {
         100: '#828fa3',
         200: '#e4ebfa',
         300: '#f4f7fd',
@@ -30,7 +30,14 @@ export default {
     extend: {
       borderRadius: {
         '20px': '20px'
-      }
+      },
+      spacing: {
+        '25': '100px',
+        '30': '120px',
+      },
+      fontSize: {
+        tiny: ['13px', '23px']
+      },
     },
   },
   plugins: [],
