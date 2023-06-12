@@ -27,7 +27,11 @@ export default {
         200: '#ff9898'
       },
     },
-    extend: {},
+    extend: {
+      borderRadius: {
+        '20px': '20px'
+      }
+    },
   },
   plugins: [],
 }
