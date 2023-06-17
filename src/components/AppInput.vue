@@ -60,13 +60,20 @@ const onInput = (e: Events['onInput']) => {
 			"
 			:class="
 				hasError
-					? 'ring-red-100 pr-30'
+					? 'ring-red-100 pr-32'
 					: 'ring-grey-100/25'
 			"
 			:value="modelValue"
 			@input="onInput"
 		/>
-		<div class="errorMessage text-red-100 absolute bottom-0 right-0 px-4 font-medium w-30">
+		<div 
+			v-if="hasError" 
+			class="
+				errorMessage text-red-100 
+				absolute bottom-0 right-0 
+				px-4 font-medium w-32
+			"
+		>
 			{{ errorMessage }}
 		</div>
 	</div>

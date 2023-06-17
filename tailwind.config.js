@@ -32,6 +32,7 @@ export default {
         '20px': '20px'
       },
       spacing: {
+        '10px': '10px',
         '25': '100px',
         '30': '120px',
       },
