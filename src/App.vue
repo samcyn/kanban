@@ -6,7 +6,7 @@ const rf = ref('');
 </script>
 <template>
   <h1>App</h1>
-  <div class="w-80 m-auto">
+  <div class="w-80 m-auto dark">
     <app-select-drop-down 
       name="select"
       v-model="rf"
