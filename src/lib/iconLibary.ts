@@ -6,7 +6,9 @@ export enum IconEnums {
   twitter = 'Twitter',
   instagram = 'Instagram',
   'arrow-forward-right' = 'Arrow Forward Right',
-  check = 'Check Arrow'
+  check = 'Check Arrow',
+  'cheveron-up' = 'CheveronUp',
+  'cheveron-down'= 'CheveronDown',
 }
 
 export type IconTypes = keyof typeof IconEnums;
@@ -46,6 +48,10 @@ const ArrowForwardRight = `<path d="M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 1
 
 const CheckArrow = `<path stroke="currentColor" stroke-width="2" fill="none" d="m1.276 3.066 2.756 2.756 5-5"/>`;
 
+const CheveronUp = `<path stroke="currentColor" stroke-width="2" fill="none" d="M9 6 5 2 1 6"/>`;
+
+const CheveronDown = `<path stroke="currentColor" stroke-width="2" fill="none" d="m1 1 4 4 4-4"/>`;
+
 const IconsLibrary: Record<IconTypes, string> = {
   hamburger: Hamburger,
   cart: Cart,
@@ -54,7 +60,9 @@ const IconsLibrary: Record<IconTypes, string> = {
   instagram: Instagram,
   twitter: Twitter,
   'arrow-forward-right': ArrowForwardRight,
-  check: CheckArrow
+  check: CheckArrow,
+  'cheveron-up': CheveronUp,
+  'cheveron-down': CheveronDown,
 };
 
 export default IconsLibrary;
