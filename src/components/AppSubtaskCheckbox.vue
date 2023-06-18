@@ -1,34 +1,55 @@
+<script setup lang="ts">
+import { InputHTMLAttributes, computed } from 'vue';
+
+import AppCheckbox from '@/components/AppCheckbox.vue';
+
+interface Props
+	extends /* @vue-ignore */ InputHTMLAttributes {
+	label?: string;
+	value?: string;
+	name?: string;
+	modelValue?: boolean|string[];
+}
+
+defineOptions({ inheritAttrs: false });
+
+const props = withDefaults(defineProps<Props>(), {
+	value: '',
+	name: ''
+});
+
+const emit = defineEmits<{
+	(
+		event: 'update:modelValue',
+		val: boolean|string[]
+	): void;
+}>();
+
+const checked = computed(() => {
+	if(Array.isArray(props.modelValue)) {
+		return props.modelValue.includes(props.value);
+	}
+	return props.modelValue;
+});
+
+const onChange = (val: boolean|string[]) => {
+	emit('update:modelValue', val);
+};
+</script>
 <template>
-	<div>
-		<input
-			id="id"
-			type="checkbox"
-			name="firstname"
-			aria-label="hello"
-			class="sr-only peer"
+	<label class="flex rounded bg-grey-300 dark:bg-black-200 p-3 gap-4 cursor-pointer transition hover:bg-purple/25">
+		<app-checkbox
+			v-bind="$attrs"
+			:value="value"
+			:name="name"
+			:model-value="modelValue"
+			@update:modelValue="onChange"
 		/>
-		<label 
-			for="id" 
-			class="
-				relative
-				cursor-pointer before:content-[''] 
-				before:mr-10px before:inline-block 
-				before:align-text-top before:w-4 
-				before:h-4 before:bg-white
-				peer-checked:before:bg-purple
-				peer-checked:after:content-['✔']
-				peer-checked:after:absolute
-				peer-checked:after:left-1
-				peer-checked:after:top-2
-				peer-checked:after:bg-white
-				peer-checked:after:w-0.5
-				peer-checked:after:h-0.5
-			"
-		> 
-			First name: 
-		</label>
-	</div>
+		<span 
+			v-if="label"
+			class="text-xs leading-[15px] text-black-100 dark:text-white font-bold select-none"
+			:class="checked ? 'line-through opacity-50' : ''"
+			>{{ label }}</span
+		>
+	</label>
 </template>
-<!-- box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
-shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
-peer-checked:after:rotate-45 -->
