@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 
+import AppIcon from '@/components/AppIcon.vue';
+
 interface Props {
 	name?: string;
 	modelValue?: string;
@@ -11,8 +13,6 @@ interface Props {
 		value: string;
 	}[];
 }
-
-import AppIcon from '@/components/AppIcon.vue';
 
 const isActive = ref(false);
 const currentLabel = ref('');
@@ -63,6 +63,7 @@ onMounted(() => {
 		}
 	});
 });
+// todo - move menu dropdown according to broswer viewport using intersectionObserver and using portal
 </script>
 <template>
 	<div
@@ -101,7 +102,6 @@ onMounted(() => {
 				/>
 			</button>
 		</div>
-
 		<div
 			v-if="hasOptions"
 			class="dropdown-menu w-full absolute left-0 right-0 z-20"
