@@ -1,43 +1,26 @@
 <script setup lang="ts">
+import AppAside from '@/layout/AppAside.vue';
+import AppHeader from '@/layout/AppHeader.vue';
+import AppContentArea from '@/layout/AppContentArea.vue';
+
 import { ref } from 'vue';
 
-// import AppSelectDropDown from '@/components/AppSelectDropDown.vue';
-import AppSwitch from '@/components/AppSwitch.vue';
-import AppModal from '@/components/AppModal.vue';
-
-
-const rf = ref(false);
+const open = ref(false);
+// const onToggle = () => (open.value = !open.value);
 </script>
 <template>
-  <h1>App</h1>
-  <div class="w-80 m-auto pt-40">
-    <AppSwitch name="sign" v-model="rf" />
-    <AppModal :show="rf" @hide="() => rf = false">
-      <div class="bg-white rounded-md p-10">
-        hello
-      </div>
-    </AppModal>
-    <!-- <app-select-drop-down 
-      name="select"
-      v-model="rf"
-      placeholder="enter a number"
-      :options="[
-        {
-          id: 1,
-          value: 'one',
-          label: 'One'
-        },
-        {
-          id: 2,
-          value: 'two',
-          label: 'Two'
-        },
-        {
-          id: 3,
-          value: 'three',
-          label: 'Three'
-        }
-      ]"
-    /> -->
-  </div>
+	<main class="wrapper">
+		<!-- aside -->
+    <app-aside />
+		<section
+			class="bg-grey-200 transiton duration-300 h-screen relative overflow-hidden"
+			:class="open ? 'pl-0 z-10' : 'pl-75'"
+		>
+      <!-- header -->
+      <app-header />
+
+			<!-- content area -->
+      <app-content-area />
+		</section>
+	</main>
 </template>

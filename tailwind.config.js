@@ -33,8 +33,10 @@ export default {
       },
       spacing: {
         '10px': '10px',
+        '50px': '50px',
         '25': '100px',
         '30': '120px',
+        '75': '300px'
       },
       fontSize: {
         tiny: ['13px', '23px']
