@@ -10,7 +10,13 @@ defineProps<{
 
 <template>
 	<div
-		class="bg-white dark:bg-black-300 rounded-lg shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
+		class="
+			bg-white dark:bg-black-300
+			md:bg-transparent md:dark:bg-transparent 
+			rounded-lg md:rounded-none 
+			shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] 
+			md:shadow-none md:flex-1 md:flex md:flex-col
+		"
 	>
 		<div class="pt-4 px-6 pb-[19px]">
 			<p
@@ -20,7 +26,7 @@ defineProps<{
 			</p>
 		</div>
 
-		<ul class="pr-6">
+		<ul class="pr-6 md:flex-1">
 			<li>
 				<a
 					href="#"
@@ -86,6 +92,7 @@ defineProps<{
 					icon="sun"
 					width="19"
 					height="19"
+					:disabled="theme === 'light'"
 					@click="$emit('switch-mode')"
 				/>
 				<app-switch
@@ -99,9 +106,11 @@ defineProps<{
 					icon="moon"
 					width="16"
 					height="16"
+					:disabled="theme === 'dark'"
 					@click="$emit('switch-mode')"
 				/>
 			</div>
 		</div>
+
 	</div>
 </template>

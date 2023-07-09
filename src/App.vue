@@ -27,6 +27,7 @@ const onToggle = () => {
 		<app-aside
 			:theme="theme"
 			@switch-mode="onToggle"
+			@toggle-nav="open = !open"
 		/>
 		<section
 			class="bg-grey-300 dark:bg-black-200 transiton duration-300 h-screen relative overflow-hidden"
