@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import {
-	Events,
-	InputHTMLAttributes,
-	computed,
-} from 'vue';
-
 import AppIcon from '@/components/AppIcon.vue';
-
-interface Props
-	extends /* @vue-ignore */ InputHTMLAttributes {
-	value: string;
-	name: string;
-	modelValue?: boolean | string[];
-}
+import useCheckbox, {
+	Props,
+} from '@/hooks/useCheckbox';
 
 defineOptions({ inheritAttrs: false });
 
@@ -28,39 +18,8 @@ const emit = defineEmits<{
 	): void;
 }>();
 
-const checked = computed(() => {
-	if (Array.isArray(props.modelValue)) {
-		return props.modelValue.includes(props.value);
-	}
-	return props.modelValue;
-});
-
-const onChange = (e: Events['onChange']) => {
-	if (Array.isArray(props.modelValue)) {
-		const indexOfValue = props.modelValue.indexOf(
-			props.value
-		);
-		if (indexOfValue !== -1) {
-			// remove value
-			emit('update:modelValue', [
-				...props.modelValue.filter(
-					(x) => x !== props.value
-				),
-			]);
-		} else {
-			// add value
-			emit('update:modelValue', [
-				...props.modelValue,
-				props.value,
-			]);
-		}
-	} else {
-		emit(
-			'update:modelValue',
-			(e.target as HTMLInputElement).checked
-		);
-	}
-};
+const { name, value, checked, onChange } =
+	useCheckbox(props, emit);
 </script>
 <template>
 	<span
@@ -70,6 +29,8 @@ const onChange = (e: Events['onChange']) => {
 			v-bind="$attrs"
 			class="absolute opacity-0 w-full h-full inset-0 m-0 p-0 z-[1]"
 			type="checkbox"
+			:name="name"
+			:value="value"
 			:checked="checked"
 			@change="onChange"
 		/>

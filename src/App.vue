@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import AppSelectDropDown from '@/components/AppSelectDropDown.vue';
 import { ref } from 'vue';
 
-const rf = ref('');
+// import AppSelectDropDown from '@/components/AppSelectDropDown.vue';
+import AppSwitch from '@/components/AppSwitch.vue';
+import AppModal from '@/components/AppModal.vue';
+
+
+const rf = ref(false);
 </script>
 <template>
   <h1>App</h1>
   <div class="w-80 m-auto pt-40">
-    <app-select-drop-down 
+    <AppSwitch name="sign" v-model="rf" />
+    <AppModal :show="rf" @hide="() => rf = false">
+      <div class="bg-white rounded-md p-10">
+        hello
+      </div>
+    </AppModal>
+    <!-- <app-select-drop-down 
       name="select"
       v-model="rf"
       placeholder="enter a number"
@@ -28,6 +38,6 @@ const rf = ref('');
           label: 'Three'
         }
       ]"
-    />
+    /> -->
   </div>
 </template>
