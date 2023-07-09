@@ -24,33 +24,7 @@ interface IconBaseProps extends SVGAttributes {
   viewBox?: string;
 }
 
-const IconBase = ({
-  className,
-  viewBox,
-  style,
-  size,
-  color,
-  icon,
-  height,
-  width,
-}: IconBaseProps) => {
-  return h(
-    'svg',
-    {
-      class: className,
-      style,
-      viewBox,
-      width: width ? width : `${size ? size + 'px' : '1em'}`,
-      height: height ? height : `${size ? size + 'px' : '1em'}`,
-      fill: color || 'currentColor',
-      xmlns: 'http://www.w3.org/2000/svg',
-      innerHTML: icon ? IconsLibrary[icon] : undefined,
-    },
-    [h('title', icon?.toUpperCase())]
-  );
-};
-
-const IconBaseDefaults = {
+export const IconBaseDefaults = {
   size: {
     type: Number as PropType<number>,
     default: 0,
@@ -83,6 +57,32 @@ const IconBaseDefaults = {
     type: String as PropType<string>,
     default: undefined,
   },
+};
+
+const IconBase = ({
+  className,
+  viewBox,
+  style,
+  size,
+  color,
+  icon,
+  height,
+  width,
+}: IconBaseProps) => {
+  return h(
+    'svg',
+    {
+      class: className,
+      style,
+      viewBox,
+      width: width ? width : `${size ? size + 'px' : '1em'}`,
+      height: height ? height : `${size ? size + 'px' : '1em'}`,
+      fill: color || 'currentColor',
+      xmlns: 'http://www.w3.org/2000/svg',
+      innerHTML: icon ? IconsLibrary[icon] : undefined,
+    },
+    [h('title', icon?.toUpperCase())]
+  );
 };
 
 IconBase.props = IconBaseDefaults;
