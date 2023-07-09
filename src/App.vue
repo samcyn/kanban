@@ -6,14 +6,18 @@ import AppContentArea from '@/layout/AppContentArea.vue';
 import { ref } from 'vue';
 
 const open = ref(false);
-// const onToggle = () => (open.value = !open.value);
+const theme = ref(false);
+
+const onToggle = () => (theme.value = !theme.value);
 </script>
 <template>
-	<main class="wrapper">
+	<main class="wrapper" :class="{
+    'dark': theme
+  }">
 		<!-- aside -->
-    <app-aside />
+    <app-aside @switch-mode="onToggle" />
 		<section
-			class="bg-grey-200 transiton duration-300 h-screen relative overflow-hidden"
+			class="bg-grey-300 dark:bg-black-200 transiton duration-300 h-screen relative overflow-hidden"
 			:class="open ? 'pl-0 z-10' : 'pl-75'"
 		>
       <!-- header -->
