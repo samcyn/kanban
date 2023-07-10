@@ -10,13 +10,7 @@ defineProps<{
 
 <template>
 	<div
-		class="
-			boardList
-			bg-white dark:bg-black-300
-			md:bg-transparent md:dark:bg-transparent 
-			rounded-lg md:rounded-none 
-			md:flex-1 md:flex md:flex-col
-		"
+		class="boardList bg-white dark:bg-black-300 md:bg-transparent md:dark:bg-transparent rounded-lg md:rounded-none md:flex-1 md:flex md:flex-col"
 	>
 		<div class="boardList__header pt-4 px-6">
 			<p
@@ -31,9 +25,11 @@ defineProps<{
 				<a
 					href="#"
 					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
-					:class="{
-						'bg-purple text-white': true
-					}"
+					:class="
+						true
+							? 'bg-purple text-white'
+							: 'hover:bg-purple/10 dark:hover:bg-white hover:text-purple'
+					"
 				>
 					<app-icon
 						icon="board"
@@ -46,7 +42,7 @@ defineProps<{
 			<li>
 				<a
 					href="#"
-					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold hover:bg-purple/10 dark:hover:bg-white hover:text-purple"
 				>
 					<app-icon
 						icon="board"
@@ -59,7 +55,7 @@ defineProps<{
 			<li>
 				<a
 					href="#"
-					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold hover:bg-purple/10 dark:hover:bg-white hover:text-purple"
 				>
 					<app-icon
 						icon="board"
@@ -111,12 +107,12 @@ defineProps<{
 				/>
 			</div>
 		</div>
-
 	</div>
 </template>
 <style lang="css" scoped>
 .boardList {
-	box-shadow: 0 10px 20px 0 rgba(54,78,126,0.25);
+	box-shadow: 0 10px 20px 0
+		rgba(54, 78, 126, 0.25);
 }
 .boardList__header {
 	padding-bottom: 19px;
@@ -144,7 +140,7 @@ defineProps<{
 }
 
 @media (min-width: 768px) {
-  .boardList {
+	.boardList {
 		box-shadow: none;
 	}
 	.controls {
@@ -154,7 +150,7 @@ defineProps<{
 }
 
 @media (min-width: 1280px) {
-  .controls {
+	.controls {
 		padding-left: 24px;
 		padding-right: 24px;
 	}
