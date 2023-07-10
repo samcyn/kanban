@@ -4,8 +4,7 @@ import AppIconButton from '@/components/AppIconButton.vue';
 import AppIcon from '@/components/AppIcon.vue';
 import AppButton from '@/components/AppButton.vue';
 
-defineProps<{collapsedSidebar: boolean}>();
-
+defineProps<{ collapsedSidebar: boolean }>();
 </script>
 <template>
 	<header class="bg-white dark:bg-black-300">
@@ -17,7 +16,7 @@ defineProps<{collapsedSidebar: boolean}>();
 			<div
 				class="nav__brand md:shadow-[1px_0_0_0_rgba(228,235,250,1)] md:dark:shadow-[1px_0_0_0_rgba(62,63,78,1)]"
 				:class="{
-					'md:hidden': !collapsedSidebar
+					'md:hidden': !collapsedSidebar,
 				}"
 			>
 				<app-brand-logo
@@ -46,7 +45,10 @@ defineProps<{collapsedSidebar: boolean}>();
 			<div
 				class="flex ml-auto text-grey-100 gap-4 md:gap-6 pt-4 xl:pt-5 pr-6 md:pr-30px xl:pr-8 pb-4 xl:pb-7"
 			>
-				<app-button class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]">
+				<app-button
+					class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]"
+					:disabled="true"
+				>
 					<app-icon
 						icon="plus"
 						width="12"

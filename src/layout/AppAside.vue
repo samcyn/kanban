@@ -13,7 +13,7 @@ defineProps<{
 			aside
 			fixed top-0 left-0 bottom-0 
 			h-full bg-white dark:bg-black-300 z-1 
-			w-75 flex overflow-hidden flex-col
+			w-65 xl:w-75 flex overflow-hidden flex-col
 			shadow-[1px_0_0_0_rgba(228,235,250,1)]
 			dark:shadow-[1px_0_0_0_rgba(62,63,78,1)]
 		"
@@ -29,7 +29,7 @@ defineProps<{
 			@switch-mode="$emit('switch-mode')"
 		/>
 
-		<div class="aside__bottom pt-2 pr-6 pb-8 -mt-4">
+		<div class="aside__bottom pt-4 xl:pt-2 pr-6 pb-8 -mt-4">
 			<button 
 				class="
 					aside__toggler outline-none m-0 

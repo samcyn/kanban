@@ -148,6 +148,13 @@ defineProps<{
 		box-shadow: none;
 	}
 	.controls {
+		padding-left: 13px;
+		padding-right: 12px;
+	}
+}
+
+@media (min-width: 1280px) {
+  .controls {
 		padding-left: 24px;
 		padding-right: 24px;
 	}

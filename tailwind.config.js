@@ -37,6 +37,7 @@ export default {
         '50px': '50px',
         '25': '100px',
         '30': '120px',
+        '65': '260px',
         '75': '300px'
       },
       fontSize: {

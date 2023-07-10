@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, toRefs } from "vue";
+import { computed, toRefs, ButtonHTMLAttributes, useAttrs } from "vue";
 
-type Props = {
+interface Props
+	extends /* @vue-ignore */ ButtonHTMLAttributes {
 	variant?: "primary" | "secondary" | "danger";
 	size?: "large" | "small";
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
 	variant: "primary",
@@ -12,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { size, variant } = toRefs(props);
-
+const attrs = useAttrs();
 const computedStyles = computed(() => {
 	if (size.value === "large") {
 		return {
@@ -39,6 +40,7 @@ const computedClass = computed(() => ({
 		variant.value === "secondary",
 	"bg-red-100 hover:bg-red-200 text-white":
 		variant.value === "danger",
+	"opacity-25": attrs.disabled
 }));
 </script>
 <template>
