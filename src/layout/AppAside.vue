@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AppIcon from '@/components/AppIcon.vue';
 import AppBoardListCard from '@/components/AppBoardListCard.vue';
+import AppBrandLogo from '@/components/AppBrandLogo.vue';
+
 defineProps<{
 	theme: 'dark' | 'light';
 }>();
@@ -16,11 +18,10 @@ defineProps<{
 			dark:shadow-[1px_0_0_0_rgba(62,63,78,1)]
 		"
 	>
-		<div>
-			<a href="#" class="aside__brand flex px-6 pt-8 text-black-100 dark:text-grey-300">
-				<span class="sr-only">logo</span>
-				<app-icon icon="logo" width="153" height="26" />
-			</a>
+		<div
+			class="aside__brand px-6 pt-8"
+		>
+			<app-brand-logo />
 		</div>
 
 		<app-board-list-card
@@ -35,7 +36,8 @@ defineProps<{
 					transition duration-200
 					flex w-full items-center font-bold
 				text-grey-100 hover:text-purple
-				hover:bg-purple/10 rounded-tr-full rounded-br-full
+				hover:bg-purple/10 dark:hover:bg-white
+				 rounded-tr-full rounded-br-full
 				"
 			@click="$emit('toggle-nav')"
 			>
@@ -49,7 +51,6 @@ defineProps<{
 .aside__brand {
 	padding-bottom: 38px;
 }
-
 .aside__toggler {
 	gap: 15px;
 	font-size: 15px;

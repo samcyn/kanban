@@ -33,6 +33,7 @@ export default {
       },
       spacing: {
         '10px': '10px',
+        '30px': '30px',
         '50px': '50px',
         '25': '100px',
         '30': '120px',

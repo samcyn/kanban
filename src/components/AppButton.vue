@@ -31,8 +31,8 @@ const computedStyles = computed(() => {
 });
 
 const computedClass = computed(() => ({
-	"rounded-3xl": size.value === "large",
-	"rounded-20px": size.value === "small",
+	// "rounded-3xl": size.value === "large",
+	// "rounded-20px": size.value === "small",
 	"bg-purple hover:bg-light-purple text-white":
 		variant.value === "primary",
 	"bg-purple/10 hover:bg-light-purple/25 text-purple dark:bg-white dark:hover:bg-white":
@@ -43,7 +43,7 @@ const computedClass = computed(() => ({
 </script>
 <template>
 	<button
-		class="button text-center outline-none border-0 font-bold cursor-pointer px-4"
+		class="button text-center outline-none border-0 font-bold cursor-pointer px-4 rounded-tl-full rounded-bl-full rounded-tr-full rounded-br-full"
 		:class="computedClass"
 		:style="computedStyles"
 	>

@@ -5,7 +5,7 @@ import AppContentArea from '@/layout/AppContentArea.vue';
 
 import { ref } from 'vue';
 
-const open = ref(false);
+const collapsedSidebar = ref(false);
 const theme = ref<'dark' | 'light'>('light');
 
 const onToggle = () => {
@@ -27,14 +27,14 @@ const onToggle = () => {
 		<app-aside
 			:theme="theme"
 			@switch-mode="onToggle"
-			@toggle-nav="open = !open"
+			@toggle-nav="collapsedSidebar = !collapsedSidebar"
 		/>
 		<section
 			class="bg-grey-300 dark:bg-black-200 transiton duration-300 h-screen relative overflow-hidden"
-			:class="open ? 'pl-0 z-10' : 'pl-0 z-10 md:z-0 md:pl-75'"
+			:class="collapsedSidebar ? 'pl-0 z-10' : 'pl-0 z-10 md:z-0 md:pl-75'"
 		>
 			<!-- header -->
-			<app-header />
+			<app-header :collapsed-sidebar="collapsedSidebar" />
 
 			<!-- content area -->
 			<app-content-area />
