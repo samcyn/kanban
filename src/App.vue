@@ -31,7 +31,7 @@ const onToggle = () => {
 		/>
 		<section
 			class="bg-grey-300 dark:bg-black-200 transiton duration-300 h-screen relative overflow-hidden"
-			:class="open ? 'pl-0 z-10' : 'pl-75'"
+			:class="open ? 'pl-0 z-10' : 'pl-0 z-10 md:z-0 md:pl-75'"
 		>
 			<!-- header -->
 			<app-header />
