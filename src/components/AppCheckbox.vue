@@ -27,7 +27,7 @@ const { name, value, checked, onChange } =
 	>
 		<input
 			v-bind="$attrs"
-			class="absolute opacity-0 w-full h-full inset-0 m-0 p-0 z-[1]"
+			class="absolute opacity-0 w-full h-full inset-0 m-0 p-0 z-1"
 			type="checkbox"
 			:name="name"
 			:value="value"

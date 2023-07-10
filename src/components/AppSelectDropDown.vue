@@ -72,7 +72,7 @@ onMounted(() => {
 	>
 		<div class="w-full" data-component="dropdown">
 			<button
-				class="bg-transparent ring-1 text-black-100 dark:text-white text-tiny font-medium cursor-pointer pt-2 pb-[9px] px-4 flex justify-between items-center whitespace-nowrap w-full"
+				class="dropdown__btn bg-transparent ring-1 text-black-100 dark:text-white text-tiny font-medium cursor-pointer pt-2 px-4 flex justify-between items-center whitespace-nowrap w-full"
 				:class="
 					isActive
 						? 'ring-purple'
@@ -137,5 +137,8 @@ onMounted(() => {
 <style scoped lang="css">
 .dropdown-menu {
 	top: calc(100% + 8px);
+}
+.dropdown__btn {
+	padding-bottom: 9px;
 }
 </style>

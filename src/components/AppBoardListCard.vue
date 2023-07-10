@@ -11,26 +11,26 @@ defineProps<{
 <template>
 	<div
 		class="
+			boardList
 			bg-white dark:bg-black-300
 			md:bg-transparent md:dark:bg-transparent 
 			rounded-lg md:rounded-none 
-			shadow-[0_10px_20px_0_rgba(54,78,126,0.25)] 
-			md:shadow-none md:flex-1 md:flex md:flex-col
+			md:flex-1 md:flex md:flex-col
 		"
 	>
-		<div class="pt-4 px-6 pb-[19px]">
+		<div class="boardList__header pt-4 px-6">
 			<p
-				class="text-grey-100 text-xs leading-[15px] font-bold tracking-[2.4px] uppercase m-0"
+				class="boardList__title text-grey-100 font-bold uppercase m-0"
 			>
 				All boards
 			</p>
 		</div>
 
-		<ul class="pr-6 md:flex-1">
+		<ul class="boards pr-6 md:flex-1">
 			<li>
 				<a
 					href="#"
-					class="flex gap-3 items-center pt-[14px] pb-[15px] px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold text-[15px] leading-[19px]"
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
 					:class="{
 						'bg-purple text-white': true
 					}"
@@ -46,7 +46,7 @@ defineProps<{
 			<li>
 				<a
 					href="#"
-					class="flex gap-3 items-center pt-[14px] pb-[15px] px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold text-[15px] leading-[19px]"
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
 				>
 					<app-icon
 						icon="board"
@@ -59,7 +59,7 @@ defineProps<{
 			<li>
 				<a
 					href="#"
-					class="flex gap-3 items-center pt-[14px] pb-[15px] px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold text-[15px] leading-[19px]"
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
 				>
 					<app-icon
 						icon="board"
@@ -72,7 +72,7 @@ defineProps<{
 			<li>
 				<a
 					href="#"
-					class="flex gap-3 items-center pt-[14px] pb-[15px] px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold text-[15px] leading-[19px]"
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold"
 				>
 					<app-icon
 						icon="board"
@@ -84,9 +84,9 @@ defineProps<{
 			</li>
 		</ul>
 
-		<div class="py-4 pl-4 pr-[13px]">
+		<div class="controls py-4">
 			<div
-				class="bg-grey-300 dark:bg-black-200 flex justify-center gap-6 rounded-md py-[14px] text-grey-100"
+				class="controls__box bg-grey-300 dark:bg-black-200 flex justify-center gap-6 rounded-md text-grey-100"
 			>
 				<app-icon-button
 					icon="sun"
@@ -114,3 +114,42 @@ defineProps<{
 
 	</div>
 </template>
+<style lang="css" scoped>
+.boardList {
+	box-shadow: 0 10px 20px 0 rgba(54,78,126,0.25);
+}
+.boardList__header {
+	padding-bottom: 19px;
+}
+.boardList__title {
+	font-size: 12px;
+	line-height: 15px;
+	letter-spacing: 2.4px;
+}
+
+.boards__link {
+	padding-top: 14px;
+	padding-bottom: 15px;
+	font-size: 15px;
+	line-height: 19px;
+}
+.controls {
+	padding-left: 16px;
+	padding-right: 13px;
+}
+
+.controls__box {
+	padding-top: 14px;
+	padding-bottom: 14px;
+}
+
+@media (min-width: 768px) {
+  .boardList {
+		box-shadow: none;
+	}
+	.controls {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+}
+</style>

@@ -38,7 +38,7 @@ const onClose = (event: Events['onClick']) => {
 				role="presentation"
 				aria-labelledby="ariaLabelledby"
 				aria-describedby="ariaDescribedby"
-				class="fixed z-[1000] inset-0"
+				class="fixed z-1000 inset-0"
 				@click="onClose"
 			>
 				<div

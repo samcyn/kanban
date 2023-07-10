@@ -41,6 +41,10 @@ export default {
       fontSize: {
         tiny: ['13px', '23px']
       },
+      zIndex: {
+        '1': '1',
+        '1000': '1000'
+      }
     },
   },
   plugins: [],

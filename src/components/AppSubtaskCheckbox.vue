@@ -47,9 +47,15 @@ const onChange = (val: boolean|string[]) => {
 		/>
 		<span 
 			v-if="label"
-			class="text-xs leading-[15px] text-black-100 dark:text-white font-bold select-none"
+			class="text-black-100 dark:text-white font-bold select-none"
 			:class="checked ? 'line-through opacity-50' : ''"
 			>{{ label }}</span
 		>
 	</label>
 </template>
+<style lang="css" scoped>
+.label {
+	font-size: 12px;
+	line-height: 15px;
+}
+</style>

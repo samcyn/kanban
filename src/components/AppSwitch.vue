@@ -23,9 +23,10 @@ const { name, value, checked, onChange } =
 <template>
 	<label
 		class="
+			switch
 			m-0 p-0 text-black-100 text-sm 
 			tabular-nums leading-5 list-none 
-			relative inline-block min-w-[40px] 
+			relative inline-block 
 			h-5 align-middle bg-purple border-0 
 			rounded-full cursor-pointer 
 			transition-all select-none
@@ -67,3 +68,8 @@ const { name, value, checked, onChange } =
 		</span>
 	</label>
 </template>
+<style lang="css" scoped>
+.switch {
+	min-width: 40px;
+}
+</style>
