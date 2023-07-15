@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppIcon from '@/components/AppIcon.vue';
-import AppIconButton from '@/components/AppIconButton.vue';
-import AppSwitch from '@/components/AppSwitch.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
+import AppIconButton from '@/components/shared/AppIconButton.vue';
+import AppSwitch from '@/components/shared/AppSwitch.vue';
 
 defineProps<{
 	theme: 'dark' | 'light';

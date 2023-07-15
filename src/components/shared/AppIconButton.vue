@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, Events } from 'vue';
 
-import AppIcon, { IconBaseDefaults } from '@/components/AppIcon.vue';
+import AppIcon, { IconBaseDefaults } from '@/components/shared/AppIcon.vue';
 
 export default defineComponent({
   name: 'AppIconButton',

@@ -2,7 +2,7 @@
 import AppAside from '@/layout/AppAside.vue';
 import AppHeader from '@/layout/AppHeader.vue';
 import AppContentArea from '@/layout/AppContentArea.vue';
-import AppIcon from '@/components/AppIcon.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
 
 import { ref } from 'vue';
 

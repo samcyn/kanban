@@ -1,9 +1,10 @@
-interface ISubtask {
+export interface ISubtask {
+  id: string
   title: string
   isCompleted: boolean
 }
 
-interface ITask {
+export interface ITask {
   id: string
   title: string
   description: string
@@ -12,13 +13,14 @@ interface ITask {
   subtasks: ISubtask[]
 }
 
-interface IColumn {
+export interface IColumn {
   id: string
   name: string
+  label?: string
   tasks: ITask[]
 }
 
-interface IBoard {
+export interface IBoard {
   id: string
   name: string
   columns: IColumn[]

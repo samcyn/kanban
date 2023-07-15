@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppIcon from '@/components/AppIcon.vue';
-import AppLink from '@/components/AppLink.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
+import AppLink from '@/components/shared/AppLink.vue';
 </script>
 <template>
   <app-link

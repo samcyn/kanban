@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import AppBrandLogo from '@/components/AppBrandLogo.vue';
-import AppIconButton from '@/components/AppIconButton.vue';
-import AppIcon from '@/components/AppIcon.vue';
-import AppButton from '@/components/AppButton.vue';
+import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
+import AppIconButton from '@/components/shared/AppIconButton.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
+import AppButton from '@/components/shared/AppButton.vue';
 
 defineProps<{ collapsedSidebar: boolean }>();
 </script>

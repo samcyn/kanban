@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppIcon from '@/components/AppIcon.vue';
-import AppBoardListCard from '@/components/AppBoardListCard.vue';
-import AppBrandLogo from '@/components/AppBrandLogo.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
+import AppBoardListCard from '@/components/boards/AppBoardListCard.vue';
+import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
 
 defineProps<{
 	theme: 'dark' | 'light';

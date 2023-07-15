@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 
-import AppIcon from '@/components/AppIcon.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
 
 interface Props {
 	name?: string;

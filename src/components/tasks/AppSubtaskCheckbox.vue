@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { InputHTMLAttributes, computed } from 'vue';
 
-import AppCheckbox from '@/components/AppCheckbox.vue';
+import AppCheckbox from '@/components/shared/AppCheckbox.vue';
 
 interface Props
 	extends /* @vue-ignore */ InputHTMLAttributes {
