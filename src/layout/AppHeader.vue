@@ -34,7 +34,7 @@ defineProps<{ collapsedSidebar: boolean }>();
 					Launch Time
 				</p>
 				<app-icon-button
-					class-name="text-purple h-[23px] w-[23px] rounded-full inline-flex items-center justify-center"
+					class-name="md:hidden text-purple h-[23px] w-[23px] rounded-full inline-flex items-center justify-center"
 					icon="cheveron-down"
 					width="9"
 					height="7"
