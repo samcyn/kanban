@@ -4,6 +4,8 @@ import { ref } from 'vue';
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 import AppColumn from '@/components/columns/AppColumn.vue';
+import AppColumnButton from '@/components/columns/AppColumnButton.vue';
+
 import { IBoard } from '@/models';
 
 const boards = ref<IBoard>({
@@ -404,14 +406,15 @@ const boards = ref<IBoard>({
 				</app-button>
 			</div>
 			<!-- display columns -->
-			<div v-else class="h-screen">
+			<div v-else class="min-h-fit">
 				<!-- columns rows -->
-				<div role="list" class="flex gap-6">
+				<div role="list" class="flex gap-6 h-full">
 					<app-column
 						v-for="column in boards.columns"
 						:key="column.id"
 						v-bind="column"
 					/>
+					<app-column-button />
 				</div>
 			</div>
 		</div>
