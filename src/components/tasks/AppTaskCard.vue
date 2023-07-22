@@ -1,6 +1,7 @@
 <script setup lang="ts">
-withDefaults(
+const props = withDefaults(
 	defineProps<{
+		id: string
 		title: string;
 		subtitle?: string;
 	}>(),
@@ -8,10 +9,16 @@ withDefaults(
 		subtitle: '',
 	}
 );
+const emit = defineEmits<{
+  (event: 'onViewTask', id: string): void
+}>();
+
+const onClick = () => emit('onViewTask', props.id);
 </script>
 <template>
 	<div
-		class="py-6 px-4 bg-white dark:bg-black-300 rounded-lg"
+		class="py-6 px-4 bg-white dark:bg-black-300 rounded-lg cursor-cell"
+		@click="onClick"
 	>
 		<p
 			class="title text-black-100 dark:text-white mb-2"

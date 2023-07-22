@@ -7,6 +7,7 @@ interface Props {
 	name?: string;
 	modelValue?: string;
 	placeholder?: string;
+	label?: string;
 	options?: {
 		id: string | number;
 		label: string;
@@ -67,9 +68,15 @@ onMounted(() => {
 </script>
 <template>
 	<div
-		class="dropdown is-active flex relative align-middle group"
+		class="dropdown is-active flex flex-col gap-2 relative align-middle group"
 		data-component="dropdown"
 	>
+		<p
+			v-if="label"
+			class="label text-grey-100 dark:text-white"
+		>
+			{{ label }}
+		</p>
 		<div class="w-full" data-component="dropdown">
 			<button
 				class="dropdown__btn bg-transparent ring-1 text-black-100 dark:text-white text-tiny font-medium cursor-pointer pt-2 px-4 flex justify-between items-center whitespace-nowrap w-full"
@@ -135,6 +142,11 @@ onMounted(() => {
 	</div>
 </template>
 <style scoped lang="css">
+.label {
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 15px;
+}
 .dropdown-menu {
 	top: calc(100% + 8px);
 }

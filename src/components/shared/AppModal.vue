@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 	show: false,
 	ariaLabel: undefined,
 	ariaLabelledby: undefined,
-  modalPositionClass: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+  modalPositionClass: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4'
 });
 const emit = defineEmits(['hide']);
 
@@ -43,7 +43,7 @@ const onClose = (event: Events['onClick']) => {
 			>
 				<div
 					aria-hidden="true"
-					class="fixed inset-0 flex justify-center items-center bg-black-100/40 opacity-100 transition-opacity"
+					class="fixed inset-0 flex justify-center items-center bg-[#000] opacity-50 transition-opacity"
 					data-non-active="true"
 				></div>
 				<div
