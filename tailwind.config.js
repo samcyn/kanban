@@ -42,7 +42,9 @@ export default {
         '75': '300px'
       },
       fontSize: {
-        tiny: ['13px', '23px']
+        small: ['12px', 'normal'],
+        tiny: ['13px', '23px'],
+        middle: ['18px', 'normal'],
       },
       zIndex: {
         '1': '1',

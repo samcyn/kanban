@@ -52,29 +52,38 @@ const onHideTask = () => {
 			class="card bg-white dark:bg-black-300 px-6 pt-6 pb-8 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
 			<div
-				class="card__header flex items-center gap-6 mb-6"
+				class="card__header flex items-center gap-4 md:gap-6 mb-6"
 			>
-				<p>
+				<p
+					class="text-middle font-bold text-black-100 dark:text-white"
+				>
 					Research pricing points of various
 					competitors and trial different business
 					models
 				</p>
 				<app-icon-button
+					class-name="text-grey-100"
 					width="5"
 					height="20"
 					viewBox="0 0 5 20"
 					icon="more"
 				/>
 			</div>
-			<div class="">
-				<p class="mb-6">
+			<div>
+				<p
+					class="text-grey-100 text-tiny font-medium mb-6"
+				>
 					We know what we're planning to build for
 					version one. Now we need to finalise the
 					first pricing model we'll use. Keep
 					iterating the subtasks until we have a
 					coherent proposition.
 				</p>
-				<p class="mb-4">Subtasks (2 of 3)</p>
+				<p
+					class="text-grey-100 dark:text-white text-small font-bold mb-4"
+				>
+					Subtasks (2 of 3)
+				</p>
 				<!-- subtasks -->
 				<div
 					class="subtasks flex flex-col gap-2 mb-6"

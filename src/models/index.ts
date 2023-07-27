@@ -28,3 +28,9 @@ export interface IBoard {
 
 
 
+// export interface IBoard {
+//   id: string
+//   name: string
+//   columns: IColumn[]
+//   tasks: ITask[]
+// }
