@@ -1,11 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSwitch from '@/components/shared/AppSwitch.vue';
+import AppBoardForm from "@/components/boards/AppBoardForm.vue";
 
 defineProps<{
 	theme: 'dark' | 'light';
 }>();
+
+const visible = ref(false);
+
+const onAddBoard = () => visible.value = true;
+
+const onHide = () => {
+	visible.value = !visible.value;
+}
+
 </script>
 
 <template>
@@ -69,6 +81,7 @@ defineProps<{
 				<a
 					href="#"
 					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold"
+					@click="onAddBoard"
 				>
 					<app-icon
 						icon="board"
@@ -108,6 +121,7 @@ defineProps<{
 			</div>
 		</div>
 	</div>
+	<app-board-form :visible="visible" mode="add" @hide="onHide" />
 </template>
 <style lang="css" scoped>
 .boardList {

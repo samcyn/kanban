@@ -11,8 +11,9 @@ const theme = ref<'dark' | 'light'>('light');
 
 const onToggle = () => {
 	// todo decide which to stick to
-	const body = document.getElementsByTagName('body')[0];
-	if(body) {
+	const body =
+		document.getElementsByTagName('body')[0];
+	if (body) {
 		body.classList.toggle('dark');
 	}
 	if (theme.value === 'light') {
@@ -49,6 +50,8 @@ const onToggleSidebar = () =>
 		>
 			<!-- header -->
 			<app-header
+				:theme="theme"
+				@switch-mode="onToggle"
 				:collapsed-sidebar="collapsedSidebar"
 			/>
 

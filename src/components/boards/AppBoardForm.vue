@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
-import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
-import AppSelectDropDown from '@/components/shared/AppSelectDropDown.vue';
 
-type Props = {} & (
+type Prop = {
+	visible: boolean;
+} & (
 	| {
 			mode: 'add';
 	  }
@@ -18,61 +16,38 @@ type Props = {} & (
 	  }
 );
 
-defineProps<Props>();
+withDefaults(defineProps<Prop>(), {
+	visible: false,
+});
 
-const showTask = ref(false);
+const emit = defineEmits<{
+	(event: 'hide'): void;
+}>();
 
-const onView = () => {
-	showTask.value = true;
-};
-
-const onHide = () => {
-	showTask.value = false;
+const onHideTask = () => {
+	emit('hide');
 };
 </script>
 <template>
-	<slot :onView="onView" :onHide="onHide">
-		<app-button
-			class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]"
-			@click="onView"
-		>
-			<app-icon
-				icon="plus"
-				width="12"
-				height="12"
-			/>
-			<span class="hidden md:inline"
-				>Add New Task</span
-			>
-		</app-button>
-	</slot>
-	<app-modal :show="showTask" @hide="onHide">
+	<app-modal :show="visible" @hide="onHideTask">
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
 			<p
 				class="text-black-100 dark:text-white text-middle font-bold mb-6"
 			>
-				Add New Task
+				Add New Board
 			</p>
 			<form class="flex flex-col gap-6">
 				<app-input
-					label="Title"
-					placeholder="e.g Take coffee break"
-				/>
-				<app-input
-					class="h-28"
-					type="textarea"
-					label="Description"
-					placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
-					resize="none"
-					:rows="4"
+					label="Board Name"
+					placeholder="e.g. Web Design"
 				/>
 				<fieldset>
 					<p
 						class="text-grey-100 dark:text-white text-small font-bold mb-2"
 					>
-						Subtasks
+					Board Columns
 					</p>
 					<!-- overflow scroll -->
 					<div
@@ -81,7 +56,7 @@ const onHide = () => {
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
 								<app-input
-									placeholder="e.g Take coffee break"
+									placeholder="Todo"
 								/>
 							</div>
 							<app-icon-button
@@ -96,7 +71,7 @@ const onHide = () => {
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
 								<app-input
-									placeholder="e.g Take coffee break"
+									placeholder="Todo"
 								/>
 							</div>
 							<app-icon-button
@@ -110,7 +85,7 @@ const onHide = () => {
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
 								<app-input
-									placeholder="e.g Take coffee break"
+									placeholder="Todo"
 								/>
 							</div>
 							<app-icon-button
@@ -124,7 +99,7 @@ const onHide = () => {
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
 								<app-input
-									placeholder="e.g Take coffee break"
+									placeholder="Todo"
 								/>
 							</div>
 							<app-icon-button
@@ -138,7 +113,7 @@ const onHide = () => {
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
 								<app-input
-									placeholder="e.g Take coffee break"
+									placeholder="Todo"
 								/>
 							</div>
 							<app-icon-button
@@ -151,31 +126,12 @@ const onHide = () => {
 						</div>
 						<!-- todo take off ends -->
 					</div>
-					<app-button
-						class="w-full"
-						type="button"
-						variant="secondary"
-						>+Add New Subtask</app-button
+					<app-button class="w-full" type="button"
+						variant="secondary">+Add New Column</app-button
 					>
 				</fieldset>
-				<app-select-drop-down
-					label="Status"
-					placeholder="Todo"
-					:options="[
-						{
-							id: '1',
-							label: 'One',
-							value: 'one',
-						},
-						{
-							id: '2',
-							label: 'Two',
-							value: 'two',
-						},
-					]"
-				/>
 				<app-button class="w-full" type="submit"
-					>Create Task</app-button
+					>Create New Board</app-button
 				>
 			</form>
 		</div>

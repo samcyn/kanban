@@ -1,23 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
-import AppIcon from '@/components/shared/AppIcon.vue';
-import AppButton from '@/components/shared/AppButton.vue';
 import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
+import AppBoardListCardMobile from '@/components/boards/AppBoardListCardMobile.vue';
 
-defineProps<{ collapsedSidebar: boolean }>();
-
-const showTask = ref(false);
-
-const onAddNewTask = () => {
-	showTask.value = true;
-};
-
-const onHide = () => {
-	showTask.value = !showTask.value;
-};
+defineProps<{
+	collapsedSidebar: boolean;
+	theme: 'light' | 'dark';
+}>();
 </script>
 <template>
 	<header class="bg-white dark:bg-black-300">
@@ -34,7 +24,7 @@ const onHide = () => {
 			>
 				<app-brand-logo
 					class="logo"
-					aria-label="audioPhile"
+					aria-label="kanban"
 				/>
 			</div>
 			<!-- logo/brand ends -->
@@ -46,31 +36,20 @@ const onHide = () => {
 				>
 					Launch Time
 				</p>
-				<app-icon-button
-					class-name="md:hidden text-purple h-[23px] w-[23px] rounded-full inline-flex items-center justify-center"
-					icon="cheveron-down"
-					width="9"
-					height="7"
-					viewBox="0 0 9 7"
+				<!-- mobile icon for showing boards -->
+				<app-board-list-card-mobile
+					:theme="theme"
+					@switch-mode="$emit('switch-mode')"
 				/>
 			</div>
 
 			<div
 				class="flex ml-auto text-grey-100 gap-4 md:gap-6 pt-4 xl:pt-5 pr-6 md:pr-30px xl:pr-8 pb-4 xl:pb-7"
 			>
-				<app-button
-					class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]"
-					@click="onAddNewTask"
-				>
-					<app-icon
-						icon="plus"
-						width="12"
-						height="12"
-					/>
-					<span class="hidden md:inline"
-						>Add New Task</span
-					>
-				</app-button>
+				<!-- add new task modal here -->
+				<app-task-form
+					mode="add"
+				/>
 				<app-icon-button
 					icon="more"
 					width="4"
@@ -80,12 +59,6 @@ const onHide = () => {
 			</div>
 		</nav>
 	</header>
-	<!-- add new task form -->
-	<app-task-form
-		mode="add"
-		:showTask="showTask"
-		@hide="onHide"
-	/>
 </template>
 <style lang="css" scoped>
 .nav__brand {
