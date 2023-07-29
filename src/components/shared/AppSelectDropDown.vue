@@ -93,7 +93,7 @@ onMounted(() => {
 				<span v-if="computedLabel">{{
 					computedLabel
 				}}</span>
-				<span class="opacity-10" v-else>{{
+				<span class="font-medium text-tiny text-black-100 dark:text-white opacity-25" v-else>{{
 					placeholder
 				}}</span>
 				<!-- app icon -->

@@ -1,10 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppButton from '@/components/shared/AppButton.vue';
+import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 
 defineProps<{ collapsedSidebar: boolean }>();
+
+const showTask = ref(false);
+
+const onAddNewTask = () => {
+	showTask.value = true;
+};
+
+const onHide = () => {
+	showTask.value = !showTask.value;
+};
 </script>
 <template>
 	<header class="bg-white dark:bg-black-300">
@@ -47,7 +60,7 @@ defineProps<{ collapsedSidebar: boolean }>();
 			>
 				<app-button
 					class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]"
-					:disabled="true"
+					@click="onAddNewTask"
 				>
 					<app-icon
 						icon="plus"
@@ -67,6 +80,12 @@ defineProps<{ collapsedSidebar: boolean }>();
 			</div>
 		</nav>
 	</header>
+	<!-- add new task form -->
+	<app-task-form
+		mode="add"
+		:showTask="showTask"
+		@hide="onHide"
+	/>
 </template>
 <style lang="css" scoped>
 .nav__brand {
