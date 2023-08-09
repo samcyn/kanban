@@ -2,12 +2,8 @@ import { defineComponent, h } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 import AppBoardsPage from '@/pages/AppBoardsPage.vue';
+import AppLoginPage from "@/pages/AppLoginPage.vue"
 
-const LoginPage = defineComponent({
-  render() {
-    return h('div', 'login')
-  }
-});
 
 const NotFoundPage = defineComponent({
   render() {
@@ -17,7 +13,7 @@ const NotFoundPage = defineComponent({
 
 const routes: readonly RouteRecordRaw[] = [
   { path: '/', component: AppBoardsPage },
-  { path: '/login', component: LoginPage },
+  { path: '/login', component: AppLoginPage },
   { path: '/:pathMatch(.*)*', component: NotFoundPage },
 ]
 

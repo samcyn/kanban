@@ -1,0 +1,51 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import AppDropdown from '@/components/shared/AppDropdown/index.vue';
+
+const selectedOptionValue = ref('option1');
+const options = [
+	{
+		id: 1,
+		text: 'Option 1',
+		value: 'option1',
+	},
+	{
+		id: 2,
+		text: 'Option 2',
+		value: 'option2',
+	},
+	{
+		id: 3,
+		text: 'Option 3',
+		value: 'option3',
+	},
+	{
+		id: 4,
+		text: 'Option 4',
+		value: 'option4',
+	},
+	{
+		id: 5,
+		text: 'Option 6',
+		value: 'option6',
+	},
+];
+</script>
+<template>
+	<app-dropdown
+		v-model="selectedOptionValue"
+		:options="options"
+	>
+		<template #trigger="{ toggleRef, onOpen, ...rest }">
+			<input
+				type="text"
+				aria-label="hell"
+				class="border-black-200"
+        :placeholder="selectedOptionValue"
+				:ref="toggleRef"
+				@focus="onOpen"
+        v-bind="rest"
+			/>
+		</template>
+	</app-dropdown>
+</template>
