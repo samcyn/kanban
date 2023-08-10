@@ -3,9 +3,12 @@ import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
+
+import useControlled from '@/hooks/useControlled';
 
 type Prop = {
-	visible: boolean;
+	modelValue?: boolean
 } & (
 	| {
 			mode: 'add';
@@ -16,27 +19,54 @@ type Prop = {
 	  }
 );
 
-withDefaults(defineProps<Prop>(), {
-	visible: false,
+const props = withDefaults(defineProps<Prop>(), {
+	mode: 'add',
+	modelValue: undefined
 });
 
 const emit = defineEmits<{
-	(event: 'hide'): void;
+  (event: 'update:modelValue', value: boolean): void
 }>();
 
-const onHideTask = () => {
-	emit('hide');
+const [visible, onSetVisible] = useControlled<boolean>(props);
+
+const onView = () => {
+	emit('update:modelValue', true);
+	onSetVisible(true);
+};
+
+const onHide = () => {
+	emit('update:modelValue', false);
+	onSetVisible(false);
 };
 </script>
 <template>
-	<app-modal :show="visible" @hide="onHideTask">
+	<slot :onView="onView" :onHide="onHide">
+		<a
+			href="#"
+			class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold"
+			@click="onView"
+		>
+			<app-icon
+				icon="board"
+				width="16"
+				height="16"
+			/>
+			+ Create New Board
+		</a>
+	</slot>
+	<app-modal :show="visible" @hide="onHide">
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
 			<p
 				class="text-black-100 dark:text-white text-middle font-bold mb-6"
 			>
-				Add New Board
+				{{
+					mode === 'add'
+						? 'Add New Board'
+						: 'Edit Board'
+				}}
 			</p>
 			<form class="flex flex-col gap-6">
 				<app-input
@@ -47,7 +77,7 @@ const onHideTask = () => {
 					<p
 						class="text-grey-100 dark:text-white text-small font-bold mb-2"
 					>
-					Board Columns
+						Board Columns
 					</p>
 					<!-- overflow scroll -->
 					<div
@@ -55,9 +85,7 @@ const onHideTask = () => {
 					>
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
-								<app-input
-									placeholder="Todo"
-								/>
+								<app-input placeholder="Todo" />
 							</div>
 							<app-icon-button
 								class-name="text-grey-100"
@@ -70,9 +98,7 @@ const onHideTask = () => {
 						<!-- todo take off -->
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
-								<app-input
-									placeholder="Todo"
-								/>
+								<app-input placeholder="Todo" />
 							</div>
 							<app-icon-button
 								class-name="text-grey-100"
@@ -84,9 +110,7 @@ const onHideTask = () => {
 						</div>
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
-								<app-input
-									placeholder="Todo"
-								/>
+								<app-input placeholder="Todo" />
 							</div>
 							<app-icon-button
 								class-name="text-grey-100"
@@ -98,9 +122,7 @@ const onHideTask = () => {
 						</div>
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
-								<app-input
-									placeholder="Todo"
-								/>
+								<app-input placeholder="Todo" />
 							</div>
 							<app-icon-button
 								class-name="text-grey-100"
@@ -112,9 +134,7 @@ const onHideTask = () => {
 						</div>
 						<div class="flex items-center gap-4">
 							<div class="flex-1">
-								<app-input
-									placeholder="Todo"
-								/>
+								<app-input placeholder="Todo" />
 							</div>
 							<app-icon-button
 								class-name="text-grey-100"
@@ -126,14 +146,29 @@ const onHideTask = () => {
 						</div>
 						<!-- todo take off ends -->
 					</div>
-					<app-button class="w-full" type="button"
-						variant="secondary">+Add New Column</app-button
+					<app-button
+						class="w-full"
+						type="button"
+						variant="secondary"
+						>+Add New Column</app-button
 					>
 				</fieldset>
-				<app-button class="w-full" type="submit"
-					>Create New Board</app-button
-				>
+				<app-button class="w-full" type="submit">
+					{{
+						mode === 'add'
+							? 'Create New Board'
+							: 'Save Changes'
+					}}
+				</app-button>
 			</form>
 		</div>
 	</app-modal>
 </template>
+<style scoped lang="css">
+.boards__link {
+	padding-top: 14px;
+	padding-bottom: 15px;
+	font-size: 15px;
+	line-height: 19px;
+}
+</style>

@@ -10,22 +10,29 @@ import {
 import {
 	useFloating,
 	flip,
+	offset,
 } from '@floating-ui/vue';
 
 interface Option {
-	id: number;
-	text: string;
-	value: string;
+	id: string | number;
+	text: string | number;
+	value: string | number;
 }
 
 type Props = {
 	modelValue: string;
 	options: Option[];
+	dropdownClass?: string;
+	hasFullWidth?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+	dropdownClass: 'min-w-[250px]',
+	hasFullWidth: false,
+});
 
-const { modelValue, options } = toRefs(props);
+const { modelValue, options, hasFullWidth } =
+	toRefs(props);
 
 const isOpen = ref(false);
 
@@ -41,7 +48,12 @@ const { floatingStyles } = useFloating(
 	dropdownContainer,
 	floating,
 	{
-		middleware: [flip()],
+		middleware: [
+			offset({
+				mainAxis: 8,
+			}),
+			flip(),
+		],
 	}
 );
 
@@ -54,7 +66,11 @@ const selectedOption = computed(() => {
 
 const onSelect = (option: Option) => {
 	isOpen.value = false;
-	emit('update:modelValue', option.value);
+	emit(
+		'update:modelValue',
+		option.value,
+		option.text
+	);
 };
 
 const onToggle = () => {
@@ -77,14 +93,30 @@ const buttonId = `dropdown-button-${Math.random()
 	.toString(36)
 	.substr(2, 9)}`;
 
-const handleOutsideClick = (event: MouseEvent) => {
-  if (
-    isOpen.value &&
-    dropdownContainer.value &&
-    !dropdownContainer.value.contains(event.target as Node)
-  ) {
-    onClose();
-  }
+const dropdownStyles = computed(() => {
+	if (dropdownContainer.value && hasFullWidth) {
+		return {
+			...floatingStyles.value,
+			width:
+				dropdownContainer.value.offsetWidth +
+				'px',
+		};
+	}
+	return floatingStyles.value;
+});
+
+const handleOutsideClick = (
+	event: MouseEvent
+) => {
+	if (
+		isOpen.value &&
+		dropdownContainer.value &&
+		!dropdownContainer.value.contains(
+			event.target as Node
+		)
+	) {
+		onClose();
+	}
 };
 
 onMounted(() => {
@@ -109,13 +141,17 @@ onBeforeUnmount(() => {
 			:onToggle="onToggle"
 			:onOpen="onOpen"
 			:onClose="onClose"
+			:isOpen="isOpen"
 			:id="buttonId"
+			:aria-expanded="isOpen"
+			:aria-haspopup="isOpen"
 		>
 			<button
 				@click="onToggle"
 				class="text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
 				ref="dropdownContainer"
 				:aria-expanded="isOpen"
+				:aria-haspopup="isOpen"
 				:id="buttonId"
 			>
 				<span>{{
@@ -137,9 +173,10 @@ onBeforeUnmount(() => {
 		<teleport to="body">
 			<div
 				v-if="isOpen"
-				class="absolute z-[9999] min-w-[250px] bg-white dark:bg-black-200 rounded-lg p-4 flex flex-col gap-2 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
+				class="absolute z-[9999] bg-white dark:bg-black-200 rounded-lg p-4 flex flex-col gap-2 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
+				:class="dropdownClass"
 				ref="floating"
-				:style="floatingStyles"
+				:style="dropdownStyles"
 				:aria-labelledby="buttonId"
 				data-dropdown="dropdown"
 			>

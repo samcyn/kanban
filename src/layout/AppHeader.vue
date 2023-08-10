@@ -3,6 +3,8 @@ import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 import AppBoardListCardMobile from '@/components/boards/AppBoardListCardMobile.vue';
+import AppBoardForm from '@/components/boards/AppBoardForm.vue';
+import AppDropdown from '@/components/shared/AppDropdown/index.vue';
 
 defineProps<{
 	collapsedSidebar: boolean;
@@ -47,15 +49,30 @@ defineProps<{
 				class="flex ml-auto text-grey-100 gap-4 md:gap-6 pt-4 xl:pt-5 pr-6 md:pr-30px xl:pr-8 pb-4 xl:pb-7"
 			>
 				<!-- add new task modal here -->
-				<app-task-form
-					mode="add"
-				/>
-				<app-icon-button
-					icon="more"
-					width="4"
-					height="16"
-					viewBox="0 0 4 16"
-				/>
+				<app-task-form mode="add" />
+				<!-- <app-board-form mode="edit">
+							<template #default="{ onView }">
+								<app-icon-button
+									icon="more"
+									width="4"
+									height="16"
+									viewBox="0 0 4 16"
+									ref="toggleRef"
+									@click="onView"
+								/>
+							</template>
+						</app-board-form> -->
+				<app-dropdown :options="[]">
+					<template #trigger="{ toggleRef }">
+						<app-icon-button
+							icon="more"
+							width="4"
+							height="16"
+							viewBox="0 0 4 16"
+							ref="toggleRef"
+						/>
+					</template>
+				</app-dropdown>
 			</div>
 		</nav>
 	</header>

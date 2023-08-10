@@ -2,12 +2,12 @@
 import AppModal from '@/components/shared/AppModal.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSubtaskCheckbox from '@/components/tasks/AppSubtaskCheckbox.vue';
-import AppSelectDropDown from '@/components/shared/AppSelectDropDown.vue';
+import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
 
 withDefaults(
 	defineProps<{
 		showTask: boolean;
-    taskId: string
+		taskId: string;
 	}>(),
 	{
 		showTask: false,
@@ -15,11 +15,11 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'hide'): void
-}>()
+	(event: 'hide'): void;
+}>();
 
 const onHideTask = () => {
-  emit('hide');
+	emit('hide');
 };
 </script>
 <template>
@@ -79,17 +79,18 @@ const onHideTask = () => {
 				</div>
 				<div>
 					<app-select-drop-down
+						model-value=""
 						label="Current Status"
 						placeholder="hello"
 						:options="[
 							{
 								id: '1',
-								label: 'One',
+								text: 'One',
 								value: 'one',
 							},
 							{
 								id: '2',
-								label: 'Two',
+								text: 'Two',
 								value: 'two',
 							},
 						]"

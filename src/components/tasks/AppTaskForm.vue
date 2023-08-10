@@ -6,7 +6,7 @@ import AppInput from '@/components/shared/AppInput.vue';
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
-import AppSelectDropDown from '@/components/shared/AppSelectDropDown.vue';
+import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
 
 type Props = {} & (
 	| {
@@ -159,17 +159,18 @@ const onHide = () => {
 					>
 				</fieldset>
 				<app-select-drop-down
+					model-value=""
 					label="Status"
 					placeholder="Todo"
 					:options="[
 						{
 							id: '1',
-							label: 'One',
+							text: 'One',
 							value: 'one',
 						},
 						{
 							id: '2',
-							label: 'Two',
+							text: 'Two',
 							value: 'two',
 						},
 					]"
