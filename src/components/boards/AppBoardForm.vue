@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { toRef } from 'vue';
+
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
@@ -8,7 +10,7 @@ import AppIcon from '@/components/shared/AppIcon.vue';
 import useControlled from '@/hooks/useControlled';
 
 type Prop = {
-	modelValue?: boolean
+	modelValue?: boolean;
 } & (
 	| {
 			mode: 'add';
@@ -21,14 +23,22 @@ type Prop = {
 
 const props = withDefaults(defineProps<Prop>(), {
 	mode: 'add',
-	modelValue: undefined
+	modelValue: undefined,
 });
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', value: boolean): void
+	(
+		event: 'update:modelValue',
+		value: boolean
+	): void;
 }>();
 
-const [visible, onSetVisible] = useControlled<boolean>(props);
+const modelValue  = toRef(props, 'modelValue');
+
+const [visible, onSetVisible] =
+	useControlled<boolean>({
+		controlled: modelValue,
+	});
 
 const onView = () => {
 	emit('update:modelValue', true);

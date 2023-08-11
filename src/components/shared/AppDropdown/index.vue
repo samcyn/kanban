@@ -6,12 +6,18 @@ import {
 	VNodeRef,
 	onMounted,
 	onBeforeUnmount,
+	useSlots,
+	cloneVNode,
+	VNode,
+	h,
 } from 'vue';
 import {
 	useFloating,
 	flip,
 	offset,
 } from '@floating-ui/vue';
+
+import useControlled from '@/hooks/useControlled';
 
 interface Option {
 	id: string | number;
@@ -24,19 +30,34 @@ type Props = {
 	options: Option[];
 	dropdownClass?: string;
 	hasFullWidth?: boolean;
+	visible?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
 	dropdownClass: 'min-w-[250px]',
 	hasFullWidth: false,
+	visible: undefined,
 });
 
-const { modelValue, options, hasFullWidth } =
-	toRefs(props);
+const {
+	modelValue,
+	options,
+	hasFullWidth,
+	visible,
+} = toRefs(props);
 
-const isOpen = ref(false);
+const [show, setShow] = useControlled({
+	controlled: visible,
+});
 
-const emit = defineEmits();
+const emit = defineEmits<{
+	(
+		event: 'update:modelValue',
+		value: string | number,
+		text: string | number
+	): void;
+	(event: 'update:visible', value: boolean): void;
+}>();
 
 const dropdownContainer = ref<
 	VNodeRef | undefined
@@ -65,7 +86,8 @@ const selectedOption = computed(() => {
 });
 
 const onSelect = (option: Option) => {
-	isOpen.value = false;
+	setShow(false);
+	emit('update:visible', false);
 	emit(
 		'update:modelValue',
 		option.value,
@@ -73,20 +95,18 @@ const onSelect = (option: Option) => {
 	);
 };
 
-const onToggle = () => {
-	isOpen.value = !isOpen.value;
-};
+// const onToggle = () => {
+// 	show.value = !show.value;
+// };
 
 const onOpen = () => {
-	isOpen.value = true;
+	emit('update:visible', true);
+	setShow(true);
 };
 
 const onClose = () => {
-	isOpen.value = false;
-};
-
-const handleRef: VNodeRef = (node) => {
-	dropdownContainer.value = node;
+	emit('update:visible', false);
+	setShow(false);
 };
 
 const buttonId = `dropdown-button-${Math.random()
@@ -109,7 +129,7 @@ const handleOutsideClick = (
 	event: MouseEvent
 ) => {
 	if (
-		isOpen.value &&
+		show.value &&
 		dropdownContainer.value &&
 		!dropdownContainer.value.contains(
 			event.target as Node
@@ -132,47 +152,44 @@ onBeforeUnmount(() => {
 		handleOutsideClick
 	);
 });
+
+const slots = useSlots();
+
+// if no default slot passed use button element
+const child =
+	(slots.default?.({})[0] as VNode) ||
+	h(
+		'button',
+		{
+			class: `ring-1 text-black-100 
+				dark:text-white text-tiny 
+				font-medium cursor-pointer 
+				py-2 px-4 flex justify-between
+				 items-center whitespace-nowrap w-full`,
+		},
+		'Missing Dropdown Trigger e.g button or input'
+	);
+
+const RootComponent = cloneVNode(child, {
+	id: buttonId,
+	onClick: onOpen,
+	onVnodeMounted(node) {
+		dropdownContainer.value = node.el;
+	},
+	onVnodeUnmounted() {
+		dropdownContainer.value = undefined;
+	},
+});
 </script>
 <template>
+	<RootComponent
+		:aria-expanded="show"
+		:aria-haspopup="show"
+	/>
 	<div class="relative">
-		<slot
-			name="trigger"
-			:toggleRef="handleRef"
-			:onToggle="onToggle"
-			:onOpen="onOpen"
-			:onClose="onClose"
-			:isOpen="isOpen"
-			:id="buttonId"
-			:aria-expanded="isOpen"
-			:aria-haspopup="isOpen"
-		>
-			<button
-				@click="onToggle"
-				class="text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
-				ref="dropdownContainer"
-				:aria-expanded="isOpen"
-				:aria-haspopup="isOpen"
-				:id="buttonId"
-			>
-				<span>{{
-					selectedOption?.text ||
-					'Select an option'
-				}}</span>
-				<svg
-					class="fill-current h-4 w-4 ml-2"
-					xmlns="http://www.w3.org/2000/svg"
-					:class="{ 'rotate-180': isOpen }"
-					viewBox="0 0 20 20"
-				>
-					<path
-						d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-					/>
-				</svg>
-			</button>
-		</slot>
 		<teleport to="body">
 			<div
-				v-if="isOpen"
+				v-if="show"
 				class="absolute z-[9999] bg-white dark:bg-black-200 rounded-lg p-4 flex flex-col gap-2 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
 				:class="dropdownClass"
 				ref="floating"
@@ -181,7 +198,8 @@ onBeforeUnmount(() => {
 				data-dropdown="dropdown"
 			>
 				<slot
-					:is-open="isOpen"
+					name="overlay"
+					:is-open="show"
 					:options="options"
 					:on-select="onSelect"
 					:selected-option-text="

@@ -36,16 +36,11 @@ const options = [
 		v-model="selectedOptionValue"
 		:options="options"
 	>
-		<template #trigger="{ toggleRef, onOpen, ...rest }">
-			<input
-				type="text"
-				aria-label="hell"
-				class="border-black-200"
-        :placeholder="selectedOptionValue"
-				:ref="toggleRef"
-				@focus="onOpen"
-        v-bind="rest"
-			/>
-		</template>
+		<input
+			type="text"
+			aria-label="name"
+			class="border-black-200"
+			:placeholder="selectedOptionValue"
+		/>
 	</app-dropdown>
 </template>
