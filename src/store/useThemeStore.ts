@@ -1,8 +1,8 @@
-import { ref, Ref } from 'vue';
-import { defineStore, StoreDefinition } from 'pinia';
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
 
 
-export const useThemeStore = defineStore('counter', () => {
+export const useThemeStore = defineStore('ThemeProvider', () => {
   const theme = ref<'dark' | 'light'>('light');
 
   function onToggle() {

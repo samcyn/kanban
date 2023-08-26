@@ -11,9 +11,16 @@ const NotFoundPage = defineComponent({
   }
 });
 
+const RootPage = defineComponent({
+  render() {
+    return h('div', 'root page')
+  }
+});
+
 const routes: readonly RouteRecordRaw[] = [
-  { path: '/', component: AppBoardsPage },
+  { path: '/', component: RootPage },
   { path: '/login', component: AppLoginPage },
+  { path: '/boards/:boardId', component: AppBoardsPage },
   { path: '/:pathMatch(.*)*', component: NotFoundPage },
 ]
 

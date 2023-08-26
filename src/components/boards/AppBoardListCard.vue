@@ -7,10 +7,13 @@ import AppSwitch from '@/components/shared/AppSwitch.vue';
 import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 
 import { useThemeStore } from '@/store/useThemeStore';
+import { useBoardStore } from '@/store/useBoardStore';
 
 const ThemeStore = useThemeStore();
+const BoardStore = useBoardStore();
 
 const { theme } = storeToRefs(ThemeStore);
+const { boards } = storeToRefs(BoardStore);
 
 const { onToggle } = ThemeStore;
 </script>
@@ -23,17 +26,17 @@ const { onToggle } = ThemeStore;
 			<p
 				class="boardList__title text-grey-100 font-bold uppercase m-0"
 			>
-				All boards
+				All boards ({{ boards.length }})
 			</p>
 		</div>
 
 		<ul class="boards pr-6 md:flex-1">
-			<li>
+			<li v-for="board in boards" :key="board.id">
 				<a
 					href="#"
 					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
 					:class="
-						true
+						board.id === 'platform_launch'
 							? 'bg-purple text-white'
 							: 'hover:bg-purple/10 dark:hover:bg-white hover:text-purple'
 					"
@@ -43,42 +46,15 @@ const { onToggle } = ThemeStore;
 						width="16"
 						height="16"
 					/>
-					Platform Launch
-				</a>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold hover:bg-purple/10 dark:hover:bg-white hover:text-purple"
-				>
-					<app-icon
-						icon="board"
-						width="16"
-						height="16"
-					/>
-					Marketing Plan
-				</a>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold hover:bg-purple/10 dark:hover:bg-white hover:text-purple"
-				>
-					<app-icon
-						icon="board"
-						width="16"
-						height="16"
-					/>
-					Marketing Plan
+					{{ board.name }}
 				</a>
 			</li>
 			<li>
 				<!-- add new board form logic, take note of the mode -->
 				<app-board-form mode="add">
 					<template #default="{ onView }">
-						<a
-							href="#"
-							class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold"
+						<button
+							class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold w-full"
 							@click="onView"
 						>
 							<app-icon
@@ -87,7 +63,7 @@ const { onToggle } = ThemeStore;
 								height="16"
 							/>
 							+ Create New Board
-						</a>
+						</button>
 					</template>
 				</app-board-form>
 			</li>
