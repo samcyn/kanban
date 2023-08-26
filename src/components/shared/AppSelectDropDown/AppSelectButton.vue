@@ -8,7 +8,7 @@ interface Props {
 	name?: string;
 	placeholder?: string;
 	label?: string|number;
-  visible: boolean
+  visible?: boolean
   setRef: VNodeRef | undefined
 }
 

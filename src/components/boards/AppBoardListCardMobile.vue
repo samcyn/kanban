@@ -12,6 +12,10 @@ withDefaults(
 	}
 );
 
+const emit = defineEmits<{
+  (event: 'switch-mode'): void
+}>();
+
 const showBoard = ref(false);
 
 const onShowBoard = () => {
@@ -21,6 +25,10 @@ const onShowBoard = () => {
 const onHideBoard = () => {
 	showBoard.value = !showBoard.value;
 };
+
+const onSwitch = () => {
+	emit('switch-mode');
+}
 </script>
 <template>
 	<app-icon-button
@@ -38,7 +46,7 @@ const onHideBoard = () => {
 	>
 		<app-board-list-card
 			:theme="theme"
-			@switch-mode="$emit('switch-mode')"
+			@switch-mode="onSwitch"
 		/>
 	</app-modal>
 </template>

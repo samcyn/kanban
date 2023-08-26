@@ -1,27 +1,20 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia'
+
 import AppAside from '@/layout/AppAside.vue';
 import AppHeader from '@/layout/AppHeader.vue';
 import AppContentArea from '@/layout/AppContentArea.vue';
 import AppIcon from '@/components/shared/AppIcon.vue';
 
-import { ref } from 'vue';
+import { useThemeStore } from '@/store/useThemeStore';
 
 const collapsedSidebar = ref(false);
-const theme = ref<'dark' | 'light'>('light');
+const ThemeStore = useThemeStore();
 
-const onToggle = () => {
-	// todo decide which to stick to
-	const body =
-		document.getElementsByTagName('body')[0];
-	if (body) {
-		body.classList.toggle('dark');
-	}
-	if (theme.value === 'light') {
-		theme.value = 'dark';
-		return;
-	}
-	theme.value = 'light';
-};
+const {
+	theme,
+} = storeToRefs(ThemeStore);
 
 const onToggleSidebar = () =>
 	(collapsedSidebar.value =
@@ -36,8 +29,6 @@ const onToggleSidebar = () =>
 	>
 		<!-- aside -->
 		<app-aside
-			:theme="theme"
-			@switch-mode="onToggle"
 			@toggle-nav="onToggleSidebar"
 		/>
 		<section
@@ -50,8 +41,6 @@ const onToggleSidebar = () =>
 		>
 			<!-- header -->
 			<app-header
-				:theme="theme"
-				@switch-mode="onToggle"
 				:collapsed-sidebar="collapsedSidebar"
 			/>
 

@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSwitch from '@/components/shared/AppSwitch.vue';
 import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 
-defineProps<{
-	theme: 'dark' | 'light';
-}>();
+import { useThemeStore } from '@/store/useThemeStore';
+
+const ThemeStore = useThemeStore();
+
+const { theme } = storeToRefs(ThemeStore);
+
+const { onToggle } = ThemeStore;
 </script>
 
 <template>
@@ -96,21 +102,19 @@ defineProps<{
 					width="19"
 					height="19"
 					:disabled="theme === 'light'"
-					@click="$emit('switch-mode')"
+					@click="onToggle"
 				/>
 				<app-switch
 					name="theme"
 					:model-value="theme === 'dark'"
-					@update:model-value="
-						$emit('switch-mode')
-					"
+					@update:model-value="onToggle"
 				/>
 				<app-icon-button
 					icon="moon"
 					width="16"
 					height="16"
 					:disabled="theme === 'dark'"
-					@click="$emit('switch-mode')"
+					@click="onToggle"
 				/>
 			</div>
 		</div>

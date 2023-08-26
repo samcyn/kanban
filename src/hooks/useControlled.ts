@@ -1,4 +1,5 @@
 import {
+  reactive,
   ref,
   Ref,
   toRefs,
@@ -9,13 +10,17 @@ const useControlled = <T>(props: {
   controlled: Ref<T>
   default?: T
 }): [Ref<T> | Ref<UnwrapRef<T>>, (newValue: UnwrapRef<T>) => void] => {
+  const reactiveProps = reactive(props);
   const {
     controlled,
     default: defaultProp
-  } = toRefs(props);
-  
+  } = toRefs(reactiveProps);
+
   const isControlled = ref(controlled?.value !== undefined);
-  console.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component`, controlled.value)
+  
+  if(import.meta.env.MODE === 'development') {
+    console.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component`, controlled.value, import.meta.env.MODE)
+  }
   const localState = ref<T>(defaultProp?.value);
   const value = isControlled.value ? controlled : localState;
 

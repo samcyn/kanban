@@ -3,9 +3,6 @@ import AppIcon from '@/components/shared/AppIcon.vue';
 import AppBoardListCard from '@/components/boards/AppBoardListCard.vue';
 import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
 
-defineProps<{
-	theme: 'dark' | 'light';
-}>();
 </script>
 <template>
 	<aside
@@ -24,10 +21,7 @@ defineProps<{
 			<app-brand-logo />
 		</div>
 
-		<app-board-list-card
-			:theme="theme"
-			@switch-mode="$emit('switch-mode')"
-		/>
+		<app-board-list-card />
 
 		<div class="aside__bottom pt-4 xl:pt-2 pr-6 pb-8 -mt-4">
 			<button 

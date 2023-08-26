@@ -3,10 +3,21 @@ import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
 import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 import AppBoardListCardMobile from '@/components/boards/AppBoardListCardMobile.vue';
 import AppManageForm from '@/components/boards/AppManageBoardForm.vue';
+
+import { useThemeStore } from '@/store/useThemeStore';
+
+const ThemeStore = useThemeStore();
+
 defineProps<{
 	collapsedSidebar: boolean;
-	theme: 'light' | 'dark';
 }>();
+const emit = defineEmits<{
+  (event: 'switch-mode'): void
+}>();
+
+const onSwitch = () => {
+	emit('switch-mode');
+}
 </script>
 <template>
 	<header class="bg-white dark:bg-black-300">
@@ -37,8 +48,8 @@ defineProps<{
 				</p>
 				<!-- mobile icon for showing boards -->
 				<app-board-list-card-mobile
-					:theme="theme"
-					@switch-mode="$emit('switch-mode')"
+					:theme="ThemeStore.theme"
+					@switch-mode="onSwitch"
 				/>
 			</div>
 
