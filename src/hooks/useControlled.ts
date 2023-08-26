@@ -15,6 +15,7 @@ const useControlled = <T>(props: {
   } = toRefs(props);
   
   const isControlled = ref(controlled?.value !== undefined);
+  console.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component`, controlled.value)
   const localState = ref<T>(defaultProp?.value);
   const value = isControlled.value ? controlled : localState;
 

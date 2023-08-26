@@ -31,6 +31,7 @@ type Props = {
 	dropdownClass?: string;
 	hasFullWidth?: boolean;
 	visible?: boolean;
+	willUseDefaultSlotProps?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -46,7 +47,7 @@ const {
 	visible,
 } = toRefs(props);
 
-const [show, setShow] = useControlled({
+const [show, setShow] = useControlled<boolean>({
 	controlled: visible,
 });
 
@@ -95,9 +96,10 @@ const onSelect = (option: Option) => {
 	);
 };
 
-// const onToggle = () => {
-// 	show.value = !show.value;
-// };
+const onToggle = () => {
+	emit('update:visible', !show.value);
+	setShow(!show.value);
+};
 
 const onOpen = () => {
 	emit('update:visible', true);
@@ -155,7 +157,7 @@ onBeforeUnmount(() => {
 
 const slots = useSlots();
 
-// if no default slot passed use button element
+// // if no default slot passed use button element
 const child =
 	(slots.default?.({})[0] as VNode) ||
 	h(
@@ -172,7 +174,7 @@ const child =
 
 const RootComponent = cloneVNode(child, {
 	id: buttonId,
-	onClick: onOpen,
+	onClick: onToggle,
 	onVnodeMounted(node) {
 		dropdownContainer.value = node.el;
 	},
@@ -180,46 +182,59 @@ const RootComponent = cloneVNode(child, {
 		dropdownContainer.value = undefined;
 	},
 });
+
+// TODO take this off
+const setRef: VNodeRef | undefined = (node) =>
+	(dropdownContainer.value = node);
 </script>
 <template>
+	<!-- TODO take this off in the future -->
+	<slot
+		v-if="willUseDefaultSlotProps"
+		:onOpen="onOpen"
+		:id="buttonId"
+		:setRef="setRef"
+		:show="show"
+		:aria-expanded="show"
+		:aria-haspopup="show"
+	></slot>
 	<RootComponent
+		v-else
 		:aria-expanded="show"
 		:aria-haspopup="show"
 	/>
-	<div class="relative">
-		<teleport to="body">
-			<div
-				v-if="show"
-				class="absolute z-[9999] bg-white dark:bg-black-200 rounded-lg p-4 flex flex-col gap-2 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
-				:class="dropdownClass"
-				ref="floating"
-				:style="dropdownStyles"
-				:aria-labelledby="buttonId"
-				data-dropdown="dropdown"
+	<teleport to="body">
+		<div
+			v-if="show"
+			class="absolute z-[9999] bg-white dark:bg-black-200 rounded-lg p-4 flex flex-col gap-2 shadow-[0_10px_20px_0_rgba(54,78,126,0.25)]"
+			:class="dropdownClass"
+			ref="floating"
+			:style="dropdownStyles"
+			:aria-labelledby="buttonId"
+			data-dropdown="dropdown"
+		>
+			<slot
+				name="overlay"
+				:is-open="show"
+				:options="options"
+				:on-select="onSelect"
+				:selected-option-text="
+					selectedOption?.text
+				"
+				:selected-option="selectedOption"
 			>
-				<slot
-					name="overlay"
-					:is-open="show"
-					:options="options"
-					:on-select="onSelect"
-					:selected-option-text="
-						selectedOption?.text
-					"
-					:selected-option="selectedOption"
+				<template
+					v-for="option in options"
+					:key="option.id"
 				>
-					<template
-						v-for="option in options"
-						:key="option.id"
+					<button
+						@click="onSelect(option)"
+						class="block w-full text-left text-grey-100 text-tiny font-medium"
 					>
-						<button
-							@click="onSelect(option)"
-							class="block w-full text-left text-grey-100 text-tiny font-medium"
-						>
-							{{ option.text }}
-						</button>
-					</template>
-				</slot>
-			</div>
-		</teleport>
-	</div>
+						{{ option.text }}
+					</button>
+				</template>
+			</slot>
+		</div>
+	</teleport>
 </template>

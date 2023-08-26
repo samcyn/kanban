@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
-import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 import AppBoardListCardMobile from '@/components/boards/AppBoardListCardMobile.vue';
-import AppBoardForm from '@/components/boards/AppBoardForm.vue';
-import AppDropdown from '@/components/shared/AppDropdown/index.vue';
-
+import AppManageForm from '@/components/boards/AppManageBoardForm.vue';
 defineProps<{
 	collapsedSidebar: boolean;
 	theme: 'light' | 'dark';
@@ -50,29 +47,8 @@ defineProps<{
 			>
 				<!-- add new task modal here -->
 				<app-task-form mode="add" />
-				<!-- <app-board-form mode="edit">
-							<template #default="{ onView }">
-								<app-icon-button
-									icon="more"
-									width="4"
-									height="16"
-									viewBox="0 0 4 16"
-									ref="toggleRef"
-									@click="onView"
-								/>
-							</template>
-						</app-board-form> -->
-				<app-dropdown :options="[]">
-					<template #trigger="{ toggleRef }">
-						<app-icon-button
-							icon="more"
-							width="4"
-							height="16"
-							viewBox="0 0 4 16"
-							ref="toggleRef"
-						/>
-					</template>
-				</app-dropdown>
+				<!-- manage delete and editing of board -->
+				<app-manage-form />
 			</div>
 		</nav>
 	</header>

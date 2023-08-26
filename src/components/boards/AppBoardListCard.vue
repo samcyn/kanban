@@ -2,12 +2,11 @@
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSwitch from '@/components/shared/AppSwitch.vue';
-import AppBoardForm from "@/components/boards/AppBoardForm.vue";
+import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 
 defineProps<{
 	theme: 'dark' | 'light';
 }>();
-
 </script>
 
 <template>
@@ -69,7 +68,22 @@ defineProps<{
 			</li>
 			<li>
 				<!-- add new board form logic, take note of the mode -->
-				<app-board-form mode="add" />
+				<app-board-form mode="add">
+					<template #default="{ onView }">
+						<a
+							href="#"
+							class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold"
+							@click="onView"
+						>
+							<app-icon
+								icon="board"
+								width="16"
+								height="16"
+							/>
+							+ Create New Board
+						</a>
+					</template>
+				</app-board-form>
 			</li>
 		</ul>
 

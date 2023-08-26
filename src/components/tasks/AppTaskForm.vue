@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { toRef } from 'vue';
 
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
@@ -8,7 +8,11 @@ import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
 
-type Props = {} & (
+import useControlled from '@/hooks/useControlled';
+
+type Props = {
+	modelValue?: boolean;
+} & (
 	| {
 			mode: 'add';
 	  }
@@ -18,16 +22,32 @@ type Props = {} & (
 	  }
 );
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+	modelValue: undefined,
+});
 
-const showTask = ref(false);
+const emit = defineEmits<{
+	(
+		event: 'update:modelValue',
+		value: boolean
+	): void;
+}>();
+
+const modelValue = toRef(props, 'modelValue');
+
+const [visible, onSetVisible] =
+	useControlled<boolean>({
+		controlled: modelValue,
+	});
 
 const onView = () => {
-	showTask.value = true;
+	emit('update:modelValue', true);
+	onSetVisible(true);
 };
 
 const onHide = () => {
-	showTask.value = false;
+	emit('update:modelValue', false);
+	onSetVisible(false);
 };
 </script>
 <template>
@@ -46,14 +66,18 @@ const onHide = () => {
 			>
 		</app-button>
 	</slot>
-	<app-modal :show="showTask" @hide="onHide">
+	<app-modal :show="visible" @hide="onHide">
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
 			<p
 				class="text-black-100 dark:text-white text-middle font-bold mb-6"
 			>
-				Add New Task
+				{{
+					mode === 'add'
+						? 'Add New Task'
+						: 'Edit Task'
+				}}
 			</p>
 			<form class="flex flex-col gap-6">
 				<app-input
@@ -175,8 +199,14 @@ const onHide = () => {
 						},
 					]"
 				/>
-				<app-button class="w-full" type="submit"
-					>Create Task</app-button
+				<app-button
+					class="w-full"
+					type="submit"
+					>{{
+						mode === 'add'
+							? 'Create Task'
+							: 'Save Changes'
+					}}</app-button
 				>
 			</form>
 		</div>

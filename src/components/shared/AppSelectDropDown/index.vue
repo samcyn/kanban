@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import AppIcon from '@/components/shared/AppIcon.vue';
 import AppDropdown from '@/components/shared/AppDropdown/index.vue';
+import AppSelectButton from '@/components/shared/AppSelectDropDown/AppSelectButton.vue';
 
 interface Props {
 	name?: string;
@@ -17,7 +17,6 @@ interface Props {
 	dropdownClass?: string;
 }
 
-const visible = ref(false);
 const selectedOptionText = ref<string | number>(
 	''
 );
@@ -70,44 +69,25 @@ const onChange = (
 		</p>
 
 		<app-dropdown
-			v-model:visible="visible"
 			:model-value="modelValue"
 			:options="options"
 			:dropdown-class="dropdownClass"
 			has-full-width
+			will-use-default-slot-props
 			@update:model-value="onChange"
 		>
-			<button
-				class="dropdown__btn bg-transparent ring-1 text-black-100 dark:text-white text-tiny font-medium cursor-pointer pt-2 px-4 flex justify-between items-center whitespace-nowrap w-full"
-				:class="
-					visible
-						? 'ring-purple'
-						: 'ring-grey-100/25 group-hover:ring-purple'
-				"
-				:aria-controls="`${name}_id`"
-				data-component="dropdown"
-				type="button"
-			>
-				<span v-if="computedLabel">{{
-					computedLabel
-				}}</span>
-				<span
-					class="font-medium text-tiny text-black-100 dark:text-white opacity-25"
-					v-else
-					>{{ placeholder }}</span
-				>
-				<!-- app icon -->
-				<app-icon
-					class-name="text-purple"
-					width="10"
-					height="7"
-					:icon="
-						visible
-							? 'cheveron-down'
-							: 'cheveron-up'
-					"
+			<!-- TODO note this won't be needed once Appdropdown API works as expected -->
+			<template #default="{onOpen, show, setRef, ...rest}">
+				<app-select-button
+					:name="name"
+					:label="computedLabel"
+					:placeholder="placeholder"
+					:visible="show"
+					:setRef="setRef"
+					@click="onOpen"
+					v-bind="rest"
 				/>
-			</button>
+			</template>
 		</app-dropdown>
 	</div>
 </template>
@@ -116,8 +96,5 @@ const onChange = (
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 15px;
-}
-.dropdown__btn {
-	padding-bottom: 9px;
 }
 </style>

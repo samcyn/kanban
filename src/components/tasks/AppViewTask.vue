@@ -1,8 +1,13 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
+
 import AppModal from '@/components/shared/AppModal.vue';
-import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSubtaskCheckbox from '@/components/tasks/AppSubtaskCheckbox.vue';
 import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
+import AppIconButton from '@/components/shared/AppIconButton.vue';
+import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
+import AppDropdown from '@/components/shared/AppDropdown/index.vue';
+import AppDeleteTask from '@/components/tasks/AppDeleteTask.vue';
 
 withDefaults(
 	defineProps<{
@@ -21,6 +26,33 @@ const emit = defineEmits<{
 const onHideTask = () => {
 	emit('hide');
 };
+
+const visible = ref('');
+
+const options: Record<
+	'text' | 'value' | 'id',
+	string | number
+>[] = [
+	{
+		id: '1',
+		value: 'edit_task',
+		text: 'Edit Task',
+	},
+	{
+		id: '2',
+		value: 'delete_task',
+		text: 'Delete Task',
+	},
+];
+
+const onTaskUpdate = (val: string | number) => {
+	emit('hide');
+	visible.value = val as string;
+};
+
+const onCloseEdit = () => {
+	visible.value = '';
+};
 </script>
 <template>
 	<app-modal :show="showTask" @hide="onHideTask">
@@ -37,13 +69,20 @@ const onHideTask = () => {
 					competitors and trial different business
 					models
 				</p>
-				<app-icon-button
-					class-name="text-grey-100"
-					width="5"
-					height="20"
-					viewBox="0 0 5 20"
-					icon="more"
-				/>
+
+				<app-dropdown
+					:model-value="visible"
+					:options="options"
+					@update:model-value="onTaskUpdate"
+				>
+					<app-icon-button
+						class-name="text-grey-100"
+						width="5"
+						height="20"
+						viewBox="0 0 5 20"
+						icon="more"
+					/>
+				</app-dropdown>
 			</div>
 			<div>
 				<p
@@ -99,4 +138,18 @@ const onHideTask = () => {
 			</div>
 		</div>
 	</app-modal>
+	<!-- edit task here -->
+	<app-task-form
+		:model-value="visible === 'edit_task'"
+		@update:modelValue="onCloseEdit"
+		mode="edit"
+		taskId="1"
+		>{{ '' }}</app-task-form
+	>
+	<!-- delete task -->
+	<app-delete-task
+		:model-value="visible === 'delete_task'"
+		@update:modelValue="onCloseEdit"
+		taskId="1"
+	/>
 </template>

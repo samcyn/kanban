@@ -5,7 +5,6 @@ import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
-import AppIcon from '@/components/shared/AppIcon.vue';
 
 import useControlled from '@/hooks/useControlled';
 
@@ -17,7 +16,7 @@ type Prop = {
 	  }
 	| {
 			mode: 'edit';
-			taskId: string;
+			boardId: string;
 	  }
 );
 
@@ -51,20 +50,7 @@ const onHide = () => {
 };
 </script>
 <template>
-	<slot :onView="onView" :onHide="onHide">
-		<a
-			href="#"
-			class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold"
-			@click="onView"
-		>
-			<app-icon
-				icon="board"
-				width="16"
-				height="16"
-			/>
-			+ Create New Board
-		</a>
-	</slot>
+	<slot :onView="onView" :onHide="onHide"></slot>
 	<app-modal :show="visible" @hide="onHide">
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
