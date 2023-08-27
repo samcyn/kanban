@@ -5,6 +5,7 @@ import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSwitch from '@/components/shared/AppSwitch.vue';
 import AppBoardForm from '@/components/boards/AppBoardForm.vue';
+import AppLink from '@/components/shared/AppLink.vue';
 
 import { useThemeStore } from '@/store/useThemeStore';
 import { useBoardStore } from '@/store/useBoardStore';
@@ -32,14 +33,17 @@ const { onToggle } = ThemeStore;
 
 		<ul class="boards pr-6 md:flex-1">
 			<li v-for="board in boards" :key="board.id">
-				<a
-					href="#"
+				<app-link
 					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-grey-100 capitalize font-bold"
-					:class="
-						board.id === 'platform_launch'
-							? 'bg-purple text-white'
-							: 'hover:bg-purple/10 dark:hover:bg-white hover:text-purple'
-					"
+					active-class="bg-purple text-white"
+					inactive-class="hover:bg-purple/10 dark:hover:bg-white hover:text-purple"
+					:to="{
+						name: 'board_dynamic',
+						params: { boardId: board.id},
+						query: {
+							boardName: board.name 
+						}
+					}"
 				>
 					<app-icon
 						icon="board"
@@ -47,7 +51,7 @@ const { onToggle } = ThemeStore;
 						height="16"
 					/>
 					{{ board.name }}
-				</a>
+				</app-link>
 			</li>
 			<li>
 				<!-- add new board form logic, take note of the mode -->

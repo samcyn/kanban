@@ -11,6 +11,7 @@ const ThemeStore = useThemeStore();
 defineProps<{
 	collapsedSidebar: boolean;
 }>();
+
 const emit = defineEmits<{
   (event: 'switch-mode'): void
 }>();
@@ -44,7 +45,7 @@ const onSwitch = () => {
 				<p
 					class="header__title m-0 text-black-100 dark:text-white capitalize"
 				>
-					Launch Time
+					{{ $route.query.boardName }}
 				</p>
 				<!-- mobile icon for showing boards -->
 				<app-board-list-card-mobile

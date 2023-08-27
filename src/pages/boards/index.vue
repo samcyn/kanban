@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia';
 
 import AppAside from '@/layout/AppAside.vue';
-import AppHeader from '@/layout/AppHeader.vue';
-import AppContentArea from '@/layout/AppContentArea.vue';
 import AppIcon from '@/components/shared/AppIcon.vue';
 
 import { useThemeStore } from '@/store/useThemeStore';
@@ -12,9 +10,7 @@ import { useThemeStore } from '@/store/useThemeStore';
 const collapsedSidebar = ref(false);
 const ThemeStore = useThemeStore();
 
-const {
-	theme,
-} = storeToRefs(ThemeStore);
+const { theme } = storeToRefs(ThemeStore);
 
 const onToggleSidebar = () =>
 	(collapsedSidebar.value =
@@ -28,9 +24,7 @@ const onToggleSidebar = () =>
 		}"
 	>
 		<!-- aside -->
-		<app-aside
-			@toggle-nav="onToggleSidebar"
-		/>
+		<app-aside @toggle-nav="onToggleSidebar" />
 		<section
 			class="bg-grey-300 dark:bg-black-200 transiton duration-300 h-screen relative overflow-hidden"
 			:class="
@@ -39,13 +33,10 @@ const onToggleSidebar = () =>
 					: 'pl-0 z-10 md:z-0 md:pl-65 xl:pl-75'
 			"
 		>
-			<!-- header -->
-			<app-header
+			<!-- router view here -->
+			<router-view
 				:collapsed-sidebar="collapsedSidebar"
-			/>
-
-			<!-- content area -->
-			<app-content-area />
+			></router-view>
 
 			<!-- aside toggler -->
 			<div

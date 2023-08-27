@@ -2,14 +2,21 @@ import { onMounted, ref } from 'vue';
 import { defineStore } from 'pinia';
 
 import { IBoard } from '@/models';
-import { boards as Data } from '@/.data/data.json';
+
+import BoardService from '@/services/BoardService';
 
 export const useBoardStore = defineStore('BoardProvider', () => {
+  const boardService = new BoardService();
   const boards = ref<IBoard[]>([]);
 
-  onMounted(() => {
+  onMounted(async () => {
     if (boards.value.length === 0) {
-      boards.value = Data as IBoard[];
+      try {
+        const response = await boardService.getBoards();
+        boards.value = response.data;
+      } catch (err) {
+        console.log(err, 122);
+      }
     }
   });
 
