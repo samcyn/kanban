@@ -49,6 +49,7 @@ const {
 
 const [show, setShow] = useControlled<boolean>({
 	controlled: visible,
+	componentName: 'AppDropdown'
 });
 
 const emit = defineEmits<{

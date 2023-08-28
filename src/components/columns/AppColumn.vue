@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import ColumnsHeader from '@/components/columns/AppColumnsHeader.vue';
 import AppTaskCard from '@/components/tasks/AppTaskCard.vue';
-import AppViewTask from "@/components/tasks/AppViewTask.vue";
+import AppViewTask from '@/components/tasks/AppViewTask.vue';
+
 import { IColumn } from '@/models';
+
+import { useQuery } from '@/hooks/useQuery';
 
 defineProps</* @vue-ignore */ IColumn>();
 
-const showTask = ref(false);
+const { onUpdateQuery } = useQuery();
 
-const onViewTask = (id: string) => {
-	console.log(id);
-	showTask.value = true;
+const onViewTask = (taskId: string) => {
+	onUpdateQuery({
+		taskId,
+		task_mode: 'VIEW_MODE',
+	});
 };
 
-const onHideTask = () => {
-	showTask.value = false;
-};
 </script>
 <template>
 	<div
@@ -32,21 +32,24 @@ const onHideTask = () => {
 			role="list"
 			class="columns__list flex flex-col gap-5"
 		>
-			<app-task-card
-				v-for="task in tasks"
-				:key="task.id"
-				role="listitem"
-				:id="task.id"
-				:title="task.title"
-				:subtitle="`0 of ${task.subtasks.length} substasks`"
-				@onViewTask="onViewTask"
-			/>
+			<template v-if="tasks.length === 0">
+				<div
+					class="bg-white dark:bg-black-300 rounded-lg min-h-[400px]"
+				></div>
+			</template>
+			<template v-else>
+				<app-task-card
+					v-for="task in tasks"
+					:key="task.id"
+					role="listitem"
+					:id="task.id"
+					:title="task.title"
+					:subtitle="`0 of ${task.subtasks.length} substasks`"
+					@onViewTask="() => onViewTask(task.id)"
+				/>
+			</template>
 		</div>
 	</div>
 	<!-- view task modal here -->
-	<app-view-task
-		:show-task="showTask"
-		task-id=""
-		@hide="onHideTask"
-	/>
+	<app-view-task />
 </template>

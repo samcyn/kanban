@@ -9,6 +9,7 @@ import {
 const useControlled = <T>(props: {
   controlled: Ref<T>
   default?: T
+  componentName?: string
 }): [Ref<T> | Ref<UnwrapRef<T>>, (newValue: UnwrapRef<T>) => void] => {
   const reactiveProps = reactive(props);
   const {
@@ -17,9 +18,9 @@ const useControlled = <T>(props: {
   } = toRefs(reactiveProps);
 
   const isControlled = ref(controlled?.value !== undefined);
-  
-  if(import.meta.env.MODE === 'development') {
-    console.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component`, controlled.value, import.meta.env.MODE)
+
+  if (import.meta.env.MODE === 'development') {
+    console.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component:-${props.componentName || 'UnknownComponent'}`)
   }
   const localState = ref<T>(defaultProp?.value);
   const value = isControlled.value ? controlled : localState;

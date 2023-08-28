@@ -48,6 +48,7 @@ const onHide = () => {
 				<app-button
 					class="flex-1"
 					variant="secondary"
+					@click="onHide"
 					>Cancel</app-button
 				>
 			</div>

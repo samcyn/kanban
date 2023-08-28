@@ -38,6 +38,7 @@ const modelValue = toRef(props, 'modelValue');
 const [visible, onSetVisible] =
 	useControlled<boolean>({
 		controlled: modelValue,
+		componentName: 'AppTaskForm'
 	});
 
 const onView = () => {

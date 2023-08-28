@@ -3,7 +3,7 @@
 import HttpClient from '@/services/index.ts';
 
 import { boards } from '@/.data/data.json';
-import { IBoard } from '@/models';
+import { IBoard, IColumn } from '@/models';
 
 export default class BoardService extends HttpClient {
   public constructor() {
@@ -15,7 +15,7 @@ export default class BoardService extends HttpClient {
   // }
 
 
-  public getBoards(): Promise<{data: IBoard[]}> {
+  public getBoards(): Promise<{ data: IBoard[] }> {
     return new Promise((resolve, _) => {
       setTimeout(() => {
         resolve({
@@ -25,4 +25,15 @@ export default class BoardService extends HttpClient {
     });
   }
 
+  public getColumnsInBoards(boardId: string): Promise<{ data: IColumn[] }> {
+    return new Promise((resolve, _) => {
+      setTimeout(() => {
+        const board = boards.find(board => board.id === boardId);
+        const columns = board ? board.columns as IColumn[] : [];
+        resolve({
+          data: columns,
+        });
+      }, 1000);
+    });
+  }
 }
