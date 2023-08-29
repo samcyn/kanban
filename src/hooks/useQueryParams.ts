@@ -12,9 +12,9 @@ type QueryType = {
 export const useQueryParams = () => {
   const route = useRoute();
   const router = useRouter();
-  const queries = route.query;
 
   const onUpdateQuery = (query: QueryType) => {
+    const queries = route.query;
     router.replace({
       query: {
         ...queries,
@@ -38,9 +38,15 @@ export const useQueryMode = (props?: Mode_Type) => {
   });
 
   const onUpdate = (obj: RouteLocationNormalizedLoaded) => {
-    const hasBoardId = obj.params.boardId !== '';
-    const hasTaskId = obj.query.taskId !== '';
-    const mode = obj.query.entity_mode;
+    const {
+      taskId,
+      entity_mode: mode
+    } = obj.query;
+    const {
+      boardId
+    } = obj.params;
+    const hasBoardId = boardId !== undefined && boardId !== '';
+    const hasTaskId = taskId !== undefined && taskId !== '';
     const property = props ? props : DEFAULT_MODES;
 
     modes.isAddMode = hasBoardId && mode === property.add;
