@@ -1,105 +1,47 @@
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
-import {
-	LocationQuery,
-	useRoute,
-	onBeforeRouteUpdate,
-	LocationQueryValue,
-} from 'vue-router';
+import { ref } from 'vue';
 
 import AppModal from '@/components/shared/AppModal.vue';
 import AppSubtaskCheckbox from '@/components/tasks/AppSubtaskCheckbox.vue';
 import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
-import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 import AppDropdown from '@/components/shared/AppDropdown/index.vue';
-import AppDeleteTask from '@/components/tasks/AppDeleteTask.vue';
 
-import { useQuery } from '@/hooks/useQuery';
+import { DEFAULT_MODES } from '@/constants/queryParamsModes';
 
-const route = useRoute();
-const { onUpdateQuery } = useQuery();
+import {
+	useQueryParams,
+	useQueryMode,
+} from '@/hooks/useQueryParams';
 
-const currentTaskId = ref<
-	LocationQueryValue | LocationQueryValue[]
->('');
-const currentTaskMode = ref<
-	LocationQueryValue | LocationQueryValue[]
->('');
+const { onUpdateQuery } = useQueryParams();
+const { isViewMode } = useQueryMode();
+
+const onTaskUpdate = (val: unknown) => {
+	visible.value = val as string;
+	onUpdateQuery({
+		entity_mode: val as string,
+	});
+};
 
 const onHideTask = () => {
 	onUpdateQuery({
 		taskId: undefined,
-		task_mode: undefined,
+		entity_mode: undefined,
 	});
 };
-
-const onQueryChanges = ({
-	taskId,
-	task_mode,
-}: LocationQuery) => {
-	if (taskId && task_mode) {
-		currentTaskId.value = taskId;
-		currentTaskMode.value = task_mode;
-	} else {
-		currentTaskId.value = '';
-		currentTaskMode.value = '';
-	}
-};
-
-onMounted(() => {
-	onQueryChanges(route.query);
-});
-
-onBeforeRouteUpdate((to) => {
-	onQueryChanges(to.query);
-});
-
-const isViewMode = computed(
-	() =>
-		currentTaskId.value !== '' &&
-		currentTaskMode.value === 'VIEW_MODE'
-);
-
-const isEditMode = computed(
-	() =>
-		currentTaskId.value !== '' &&
-		currentTaskMode.value === 'EDIT_MODE'
-);
-
-const isDeleteMode = computed(
-	() =>
-		currentTaskId.value !== '' &&
-		currentTaskMode.value === 'DELETE_MODE'
-);
 
 const visible = ref('');
 
-const onTaskUpdate = (val: string | number) => {
-	visible.value = val as string;
-	onUpdateQuery({
-		taskId: route.query.taskId,
-		task_mode: val,
-	});
-};
-
-const onCloseEdit = () => {
-	visible.value = '';
-	onHideTask();
-};
-
-const options: Record<
-	'text' | 'value' | 'id',
-	string | number
->[] = [
+const options = [
 	{
 		id: '1',
-		value: 'EDIT_MODE',
+		value: DEFAULT_MODES.edit,
 		text: 'Edit Task',
 	},
 	{
 		id: '2',
-		value: 'DELETE_MODE',
+		value: DEFAULT_MODES.delete,
 		text: 'Delete Task',
 	},
 ];
@@ -191,18 +133,4 @@ const options: Record<
 			</div>
 		</div>
 	</app-modal>
-	<!-- edit task here -->
-	<app-task-form
-		:model-value="isEditMode"
-		@update:modelValue="onCloseEdit"
-		mode="edit"
-		taskId="1"
-		>{{ '' }}</app-task-form
-	>
-	<!-- delete task -->
-	<app-delete-task
-		:model-value="isDeleteMode"
-		@update:modelValue="onCloseEdit"
-		taskId="1"
-	/>
 </template>

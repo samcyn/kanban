@@ -1,73 +1,32 @@
 <script lang="ts" setup>
-import { toRef } from 'vue';
+// import { computed } from 'vue';
 
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
-import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
 
-import useControlled from '@/hooks/useControlled';
+import {
+	useQueryParams,
+	useQueryMode,
+} from '@/hooks/useQueryParams';
 
-type Props = {
-	modelValue?: boolean;
-} & (
-	| {
-			mode: 'add';
-	  }
-	| {
-			mode: 'edit';
-			taskId: string;
-	  }
-);
+const { onUpdateQuery } = useQueryParams();
+const { isAddMode, isEditMode } = useQueryMode();
 
-const props = withDefaults(defineProps<Props>(), {
-	modelValue: undefined,
-});
-
-const emit = defineEmits<{
-	(
-		event: 'update:modelValue',
-		value: boolean
-	): void;
-}>();
-
-const modelValue = toRef(props, 'modelValue');
-
-const [visible, onSetVisible] =
-	useControlled<boolean>({
-		controlled: modelValue,
-		componentName: 'AppTaskForm'
+const onHideTask = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: undefined,
 	});
-
-const onView = () => {
-	emit('update:modelValue', true);
-	onSetVisible(true);
-};
-
-const onHide = () => {
-	emit('update:modelValue', false);
-	onSetVisible(false);
 };
 </script>
 <template>
-	<slot :onView="onView" :onHide="onHide">
-		<app-button
-			class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]"
-			@click="onView"
-		>
-			<app-icon
-				icon="plus"
-				width="12"
-				height="12"
-			/>
-			<span class="hidden md:inline"
-				>Add New Task</span
-			>
-		</app-button>
-	</slot>
-	<app-modal :show="visible" @hide="onHide">
+	<app-modal
+		:show="isAddMode || isEditMode"
+		@hide="onHideTask"
+	>
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
@@ -75,9 +34,7 @@ const onHide = () => {
 				class="text-black-100 dark:text-white text-middle font-bold mb-6"
 			>
 				{{
-					mode === 'add'
-						? 'Add New Task'
-						: 'Edit Task'
+					isAddMode ? 'Add New Task' : 'Edit Task'
 				}}
 			</p>
 			<form class="flex flex-col gap-6">
@@ -204,7 +161,7 @@ const onHide = () => {
 					class="w-full"
 					type="submit"
 					>{{
-						mode === 'add'
+						isAddMode
 							? 'Create Task'
 							: 'Save Changes'
 					}}</app-button

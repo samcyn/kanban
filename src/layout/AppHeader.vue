@@ -1,24 +1,28 @@
 <script setup lang="ts">
 import AppBrandLogo from '@/components/shared/AppBrandLogo.vue';
-import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
+import AppIcon from '@/components/shared/AppIcon.vue';
 import AppBoardListCardMobile from '@/components/boards/AppBoardListCardMobile.vue';
 import AppManageForm from '@/components/boards/AppManageBoardForm.vue';
+import AppButton from '@/components/shared/AppButton.vue';
+
+import { useQueryParams } from '@/hooks/useQueryParams';
 
 import { useThemeStore } from '@/store/useThemeStore';
+import { DEFAULT_MODES } from '@/constants/queryParamsModes';
 
 const ThemeStore = useThemeStore();
 
 defineProps<{
 	collapsedSidebar: boolean;
 }>();
+const { onUpdateQuery } = useQueryParams();
 
-const emit = defineEmits<{
-  (event: 'switch-mode'): void
-}>();
-
-const onSwitch = () => {
-	emit('switch-mode');
-}
+const onAddTask = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: DEFAULT_MODES.add,
+	});
+};
 </script>
 <template>
 	<header class="bg-white dark:bg-black-300">
@@ -50,7 +54,6 @@ const onSwitch = () => {
 				<!-- mobile icon for showing boards -->
 				<app-board-list-card-mobile
 					:theme="ThemeStore.theme"
-					@switch-mode="onSwitch"
 				/>
 			</div>
 
@@ -58,7 +61,19 @@ const onSwitch = () => {
 				class="flex ml-auto text-grey-100 gap-4 md:gap-6 pt-4 xl:pt-5 pr-6 md:pr-30px xl:pr-8 pb-4 xl:pb-7"
 			>
 				<!-- add new task modal here -->
-				<app-task-form mode="add" />
+				<app-button
+					class="inline-flex gap-1 items-center px-[18px] md:!text-[15px] md:!leading-[19px] md:pl-6 md:pr-[25px] !py-10px md:!pt-[15px] md:!pb-[14px]"
+					@click="onAddTask"
+				>
+					<app-icon
+						icon="plus"
+						width="12"
+						height="12"
+					/>
+					<span class="hidden md:inline"
+						>Add New Task</span
+					>
+				</app-button>
 				<!-- manage delete and editing of board -->
 				<app-manage-form />
 			</div>

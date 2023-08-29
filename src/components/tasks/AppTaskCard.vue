@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const props = withDefaults(
+import { useQueryParams } from '@/hooks/useQueryParams';
+
+withDefaults(
 	defineProps<{
-		id: string
+		id: string;
 		title: string;
 		subtitle?: string;
 	}>(),
@@ -9,16 +11,19 @@ const props = withDefaults(
 		subtitle: '',
 	}
 );
-const emit = defineEmits<{
-  (event: 'onViewTask', id: string): void
-}>();
+const { onUpdateQuery } = useQueryParams();
 
-const onClick = () => emit('onViewTask', props.id);
+const onClick = (taskId: string) => {
+	onUpdateQuery({
+		taskId,
+		entity_mode: 'VIEW_TASK_MODE',
+	});
+};
 </script>
 <template>
 	<div
 		class="py-6 px-4 bg-white dark:bg-black-300 rounded-lg cursor-cell"
-		@click="onClick"
+		@click="() => onClick(id)"
 	>
 		<p
 			class="title text-black-100 dark:text-white mb-2"

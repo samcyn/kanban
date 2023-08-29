@@ -22,7 +22,7 @@ import useControlled from '@/hooks/useControlled';
 interface Option {
 	id: string | number;
 	text: string | number;
-	value: string | number;
+	value: unknown;
 }
 
 type Props = {
@@ -55,7 +55,7 @@ const [show, setShow] = useControlled<boolean>({
 const emit = defineEmits<{
 	(
 		event: 'update:modelValue',
-		value: string | number,
+		value: unknown,
 		text: string | number
 	): void;
 	(event: 'update:visible', value: boolean): void;

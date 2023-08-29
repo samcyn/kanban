@@ -1,22 +1,10 @@
 <script setup lang="ts">
 import ColumnsHeader from '@/components/columns/AppColumnsHeader.vue';
 import AppTaskCard from '@/components/tasks/AppTaskCard.vue';
-import AppViewTask from '@/components/tasks/AppViewTask.vue';
 
 import { IColumn } from '@/models';
 
-import { useQuery } from '@/hooks/useQuery';
-
 defineProps</* @vue-ignore */ IColumn>();
-
-const { onUpdateQuery } = useQuery();
-
-const onViewTask = (taskId: string) => {
-	onUpdateQuery({
-		taskId,
-		task_mode: 'VIEW_MODE',
-	});
-};
 
 </script>
 <template>
@@ -45,11 +33,8 @@ const onViewTask = (taskId: string) => {
 					:id="task.id"
 					:title="task.title"
 					:subtitle="`0 of ${task.subtasks.length} substasks`"
-					@onViewTask="() => onViewTask(task.id)"
 				/>
 			</template>
 		</div>
 	</div>
-	<!-- view task modal here -->
-	<app-view-task />
 </template>

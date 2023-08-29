@@ -9,9 +9,12 @@ import AppIcon from '@/components/shared/AppIcon.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 import AppColumn from '@/components/columns/AppColumn.vue';
 import AppColumnButton from '@/components/columns/AppColumnButton.vue';
+import AppViewTask from '@/components/tasks/AppViewTask.vue';
+import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
+import AppDeleteTask from '@/components/tasks/AppDeleteTask.vue';
 
-import { IColumn } from '@/models';
 import BoardService from '@/services/BoardService';
+import { IColumn } from '@/models';
 
 const loading = ref(false);
 const columns = ref<IColumn[]>([]);
@@ -98,6 +101,11 @@ onBeforeRouteUpdate((to, from) => {
 			</div>
 		</div>
 	</div>
+	<!-- MANAGE TASK FORMS HERE -->
+	<app-view-task />
+	<app-task-form />
+	<app-delete-task />
+	<!-- END MANAGE TASK FORMS HERE -->
 </template>
 <style lang="css" scoped>
 .contentArea {
