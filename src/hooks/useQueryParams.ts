@@ -2,7 +2,7 @@ import { onMounted, reactive, toRefs } from 'vue';
 import { useRouter, useRoute, LocationQueryValueRaw, RouteLocationNormalizedLoaded, onBeforeRouteUpdate } from 'vue-router';
 
 import { Mode_Type } from '@/models/queryParamsModeType';
-import { DEFAULT_MODES } from '@/constants/queryParamsModes';
+import { DEFAULT_TASK_ACTIONS } from '@/constants/queryParamsModes';
 
 type QueryType = {
   taskId?: LocationQueryValueRaw | LocationQueryValueRaw[];
@@ -28,7 +28,7 @@ export const useQueryParams = () => {
   };
 }
 
-export const useQueryMode = (props?: Mode_Type) => {
+export const useQueryMode = (props?: Mode_Type, which: 'board' | 'task' = 'task') => {
   const route = useRoute();
   const modes = reactive({
     isAddMode: false,
@@ -47,12 +47,19 @@ export const useQueryMode = (props?: Mode_Type) => {
     } = obj.params;
     const hasBoardId = boardId !== undefined && boardId !== '';
     const hasTaskId = taskId !== undefined && taskId !== '';
-    const property = props ? props : DEFAULT_MODES;
+    const property = props ? props : DEFAULT_TASK_ACTIONS;
 
     modes.isAddMode = hasBoardId && mode === property.add;
-    modes.isEditMode = hasTaskId && mode === property.edit;
-    modes.isViewMode = hasTaskId && mode === property.view;
-    modes.isDeleteMode = hasTaskId && mode === property.delete;
+    if (which === 'task') {
+      modes.isEditMode = hasTaskId && mode === property.edit;
+      modes.isViewMode = hasTaskId && mode === property.view;
+      modes.isDeleteMode = hasTaskId && mode === property.delete;
+    }
+    if (which === 'board') {
+      modes.isEditMode = hasBoardId && mode === property.edit;
+      modes.isViewMode = hasBoardId && mode === property.view;
+      modes.isDeleteMode = hasBoardId && mode === property.delete;
+    }
   }
 
   onMounted(() => {

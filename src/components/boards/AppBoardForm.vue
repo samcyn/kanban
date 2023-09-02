@@ -1,58 +1,33 @@
 <script lang="ts" setup>
-import { toRef } from 'vue';
-
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 
-import useControlled from '@/hooks/useControlled';
+import {
+	useQueryMode,
+	useQueryParams,
+} from '@/hooks/useQueryParams';
+import { DEFAULT_BOARD_ACTIONS } from '@/constants/queryParamsModes';
 
-type Prop = {
-	modelValue?: boolean;
-} & (
-	| {
-			mode: 'add';
-	  }
-	| {
-			mode: 'edit';
-			boardId: string;
-	  }
+const { onUpdateQuery } = useQueryParams();
+const { isAddMode, isEditMode } = useQueryMode(
+	DEFAULT_BOARD_ACTIONS,
+	'board'
 );
 
-const props = withDefaults(defineProps<Prop>(), {
-	mode: 'add',
-	modelValue: undefined,
-});
-
-const emit = defineEmits<{
-	(
-		event: 'update:modelValue',
-		value: boolean
-	): void;
-}>();
-
-const modelValue  = toRef(props, 'modelValue');
-
-const [visible, onSetVisible] =
-	useControlled<boolean>({
-		controlled: modelValue,
-		componentName: 'AppBoardForm'
+const onHideBoard = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: undefined,
 	});
-
-const onView = () => {
-	emit('update:modelValue', true);
-	onSetVisible(true);
-};
-
-const onHide = () => {
-	emit('update:modelValue', false);
-	onSetVisible(false);
 };
 </script>
 <template>
-	<slot :onView="onView" :onHide="onHide"></slot>
-	<app-modal :show="visible" @hide="onHide">
+	<app-modal
+		:show="isAddMode || isEditMode"
+		@hide="onHideBoard"
+	>
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
@@ -60,7 +35,7 @@ const onHide = () => {
 				class="text-black-100 dark:text-white text-middle font-bold mb-6"
 			>
 				{{
-					mode === 'add'
+					isAddMode
 						? 'Add New Board'
 						: 'Edit Board'
 				}}
@@ -152,7 +127,7 @@ const onHide = () => {
 				</fieldset>
 				<app-button class="w-full" type="submit">
 					{{
-						mode === 'add'
+						isAddMode
 							? 'Create New Board'
 							: 'Save Changes'
 					}}

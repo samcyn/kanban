@@ -8,7 +8,7 @@ import AppButton from '@/components/shared/AppButton.vue';
 import { useQueryParams } from '@/hooks/useQueryParams';
 
 import { useThemeStore } from '@/store/useThemeStore';
-import { DEFAULT_MODES } from '@/constants/queryParamsModes';
+import { DEFAULT_TASK_ACTIONS } from '@/constants/queryParamsModes';
 
 const ThemeStore = useThemeStore();
 
@@ -20,7 +20,7 @@ const { onUpdateQuery } = useQueryParams();
 const onAddTask = () => {
 	onUpdateQuery({
 		taskId: undefined,
-		entity_mode: DEFAULT_MODES.add,
+		entity_mode: DEFAULT_TASK_ACTIONS.add,
 	});
 };
 </script>

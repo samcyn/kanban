@@ -7,7 +7,7 @@ import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppDropdown from '@/components/shared/AppDropdown/index.vue';
 
-import { DEFAULT_MODES } from '@/constants/queryParamsModes';
+import { DEFAULT_TASK_ACTIONS } from '@/constants/queryParamsModes';
 
 import {
 	useQueryParams,
@@ -36,12 +36,12 @@ const visible = ref('');
 const options = [
 	{
 		id: '1',
-		value: DEFAULT_MODES.edit,
+		value: DEFAULT_TASK_ACTIONS.edit,
 		text: 'Edit Task',
 	},
 	{
 		id: '2',
-		value: DEFAULT_MODES.delete,
+		value: DEFAULT_TASK_ACTIONS.delete,
 		text: 'Delete Task',
 	},
 ];

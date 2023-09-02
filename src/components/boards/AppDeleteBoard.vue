@@ -2,26 +2,27 @@
 import AppModal from '@/components/shared/AppModal.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 
-type Props = {
-	modelValue: boolean;
-	boardId: string | number;
-};
+import {
+	useQueryMode,
+	useQueryParams,
+} from '@/hooks/useQueryParams';
+import { DEFAULT_BOARD_ACTIONS } from '@/constants/queryParamsModes';
 
-defineProps<Props>();
+const { onUpdateQuery } = useQueryParams();
+const { isDeleteMode } = useQueryMode(
+	DEFAULT_BOARD_ACTIONS,
+	'board'
+);
 
-const emit = defineEmits<{
-	(
-		event: 'update:modelValue',
-		value: boolean
-	): void;
-}>();
-
-const onHide = () => {
-	emit('update:modelValue', false);
+const onHideTask = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: undefined,
+	});
 };
 </script>
 <template>
-	<app-modal :show="modelValue" @hide="onHide">
+	<app-modal :show="isDeleteMode" @hide="onHideTask">
 		<div
 			class="bg-white dark:bg-black-300 rounded-md p-6 md:px-8 md:pt-8 md:pb-10 max-w-[480px] m-auto"
 		>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQueryParams } from '@/hooks/useQueryParams';
-import { DEFAULT_MODES } from '@/constants/queryParamsModes';
+import { DEFAULT_TASK_ACTIONS } from '@/constants/queryParamsModes';
 
 withDefaults(
 	defineProps<{
@@ -17,7 +17,7 @@ const { onUpdateQuery } = useQueryParams();
 const onClick = (taskId: string) => {
 	onUpdateQuery({
 		taskId,
-		entity_mode: DEFAULT_MODES.view,
+		entity_mode: DEFAULT_TASK_ACTIONS.view,
 	});
 };
 </script>

@@ -4,19 +4,28 @@ import { storeToRefs } from 'pinia';
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppSwitch from '@/components/shared/AppSwitch.vue';
-import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 import AppLink from '@/components/shared/AppLink.vue';
 
 import { useThemeStore } from '@/store/useThemeStore';
 import { useBoardStore } from '@/store/useBoardStore';
+import { DEFAULT_BOARD_ACTIONS } from '@/constants/queryParamsModes';
+import { useQueryParams } from '@/hooks/useQueryParams';
 
 const ThemeStore = useThemeStore();
 const BoardStore = useBoardStore();
+const { onUpdateQuery } = useQueryParams();
 
 const { theme } = storeToRefs(ThemeStore);
 const { boards } = storeToRefs(BoardStore);
 
 const { onToggle } = ThemeStore;
+
+const onAddBoard = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: DEFAULT_BOARD_ACTIONS.add,
+	});
+};
 </script>
 
 <template>
@@ -39,10 +48,10 @@ const { onToggle } = ThemeStore;
 					inactive-class="hover:bg-purple/10 dark:hover:bg-white hover:text-purple"
 					:to="{
 						name: 'board_dynamic',
-						params: { boardId: board.id},
+						params: { boardId: board.id },
 						query: {
-							boardName: board.name 
-						}
+							boardName: board.name,
+						},
 					}"
 				>
 					<app-icon
@@ -55,21 +64,17 @@ const { onToggle } = ThemeStore;
 			</li>
 			<li>
 				<!-- add new board form logic, take note of the mode -->
-				<app-board-form mode="add">
-					<template #default="{ onView }">
-						<button
-							class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold w-full"
-							@click="onView"
-						>
-							<app-icon
-								icon="board"
-								width="16"
-								height="16"
-							/>
-							+ Create New Board
-						</button>
-					</template>
-				</app-board-form>
+				<button
+					class="boards__link flex gap-3 items-center px-6 rounded-tr-full rounded-br-full text-purple capitalize font-bold w-full"
+					@click="onAddBoard"
+				>
+					<app-icon
+						icon="board"
+						width="16"
+						height="16"
+					/>
+					+ Create New Board
+				</button>
 			</li>
 		</ul>
 

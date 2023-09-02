@@ -12,6 +12,8 @@ import AppColumnButton from '@/components/columns/AppColumnButton.vue';
 import AppViewTask from '@/components/tasks/AppViewTask.vue';
 import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 import AppDeleteTask from '@/components/tasks/AppDeleteTask.vue';
+import AppBoardForm from '@/components/boards/AppBoardForm.vue';
+import AppDeleteBoard from '@/components/boards/AppDeleteBoard.vue';
 
 import BoardService from '@/services/BoardService';
 import { IColumn } from '@/models';
@@ -106,6 +108,9 @@ onBeforeRouteUpdate((to, from) => {
 	<app-task-form />
 	<app-delete-task />
 	<!-- END MANAGE TASK FORMS HERE -->
+	<!-- MANAGE BOARD FORMS -->
+	<app-board-form />
+	<app-delete-board />
 </template>
 <style lang="css" scoped>
 .contentArea {
