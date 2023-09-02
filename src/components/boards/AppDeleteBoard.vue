@@ -14,7 +14,7 @@ const { isDeleteMode } = useQueryMode(
 	'board'
 );
 
-const onHideTask = () => {
+const onHideBoard = () => {
 	onUpdateQuery({
 		taskId: undefined,
 		entity_mode: undefined,
@@ -22,7 +22,7 @@ const onHideTask = () => {
 };
 </script>
 <template>
-	<app-modal :show="isDeleteMode" @hide="onHideTask">
+	<app-modal :show="isDeleteMode" @hide="onHideBoard">
 		<div
 			class="bg-white dark:bg-black-300 rounded-md p-6 md:px-8 md:pt-8 md:pb-10 max-w-[480px] m-auto"
 		>
@@ -50,6 +50,7 @@ const onHideTask = () => {
 				<app-button
 					class="flex-1"
 					variant="secondary"
+					@click="onHideBoard"
 					>Cancel</app-button
 				>
 			</div>
