@@ -1,48 +1,27 @@
 <script setup lang="ts">
-import {
-	VNode,
-	cloneVNode,
-	h,
-	ref,
-	useSlots,
-} from 'vue';
-
 import AppModal from '@/components/shared/AppModal.vue';
 import AppButton from '@/components/shared/AppButton.vue';
+import { DEFAULT_COLUMN_ACTIONS } from '@/constants/queryParamsModes';
+import {
+	useQueryParams,
+	useQueryMode,
+} from '@/hooks/useQueryParams';
 
-const visible = ref(false);
-
-const onView = () => {
-	visible.value = true;
-};
+const { onUpdateQuery } = useQueryParams();
+const { isAddMode } = useQueryMode(
+	DEFAULT_COLUMN_ACTIONS,
+	'board'
+);
 
 const onHide = () => {
-	visible.value = false;
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: undefined,
+	});
 };
-
-const slots = useSlots();
-
-const child =
-	(slots.default?.({})[0] as VNode) ||
-	h(
-		'button',
-		{
-			class: `ring-1 text-black-100 
-				dark:text-white text-tiny 
-				font-medium cursor-pointer 
-				py-2 px-4 flex justify-between
-				 items-center whitespace-nowrap w-full`,
-		},
-		'Missing Dropdown Trigger e.g button or input'
-	);
-
-const RootComponent = cloneVNode(child, {
-	onClick: onView,
-});
 </script>
 <template>
-	<RootComponent />
-	<app-modal :show="visible" @hide="onHide">
+	<app-modal :show="isAddMode" @hide="onHide">
 		<div
 			class="bg-white dark:bg-black-300 rounded-md p-6 md:px-8 md:pt-8 md:pb-10 max-w-[480px] m-auto"
 		>

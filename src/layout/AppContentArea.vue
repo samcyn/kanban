@@ -14,6 +14,7 @@ import AppTaskForm from '@/components/tasks/AppTaskForm.vue';
 import AppDeleteTask from '@/components/tasks/AppDeleteTask.vue';
 import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 import AppDeleteBoard from '@/components/boards/AppDeleteBoard.vue';
+import AddColumn from '@/components/columns/AddColumn.vue';
 
 import BoardService from '@/services/BoardService';
 import { IColumn } from '@/models';
@@ -103,14 +104,20 @@ onBeforeRouteUpdate((to, from) => {
 			</div>
 		</div>
 	</div>
-	<!-- MANAGE TASK FORMS HERE -->
+	<!-- MANAGE TASK FORMS/MODALS HERE -->
 	<app-view-task />
 	<app-task-form />
 	<app-delete-task />
-	<!-- END MANAGE TASK FORMS HERE -->
-	<!-- MANAGE BOARD FORMS -->
+	<!-- END MANAGE TASK FORMS/MODALS HERE -->
+
+	<!-- MANAGE BOARD FORMS/MODALS HERE -->
 	<app-board-form />
 	<app-delete-board />
+	<!-- END MANAGE BOARD FORM/MODALS HERE -->
+
+	<!-- MANAGE COLUMNS FORMS/MODALS HERE -->
+	<add-column />
+	<!-- END MANAGE COLUMNS FORMS/MODALS HERE -->
 </template>
 <style lang="css" scoped>
 .contentArea {

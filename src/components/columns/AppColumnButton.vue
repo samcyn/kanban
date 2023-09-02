@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import ColumnsHeader from '@/components/columns/AppColumnsHeader.vue';
-import AddColumn from '@/components/columns/AddColumn.vue';
+import { DEFAULT_COLUMN_ACTIONS } from '@/constants/queryParamsModes';
+import { useQueryParams } from '@/hooks/useQueryParams';
+
+const { onUpdateQuery } = useQueryParams();
+
+const onClick = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: DEFAULT_COLUMN_ACTIONS.add,
+	});
+};
 </script>
 <template>
 	<div
@@ -14,13 +24,16 @@ import AddColumn from '@/components/columns/AddColumn.vue';
 		<div
 			class="columns__list flex flex-col gap-5 h-full"
 		>
-			<add-column>
-				<button
-					class="button flex items-center justify-center h-full text-grey-100 hover:text-purple bg-gradient-to-r from-[#e9effa] to-[#e9effa]/50 dark:bg-gradient-to-b dark:from-black-300/25 dark:to-black-300/10"
-				>
-					+ New Column
-				</button>
-			</add-column>
+			<button
+				class="button flex items-center justify-center 
+				h-full text-grey-100 hover:text-purple 
+				bg-gradient-to-r from-[#e9effa]
+				 to-[#e9effa]/50 dark:bg-gradient-to-b
+				  dark:from-black-300/25 dark:to-black-300/10"
+				@click="onClick"
+			>
+				+ New Column
+			</button>
 		</div>
 	</div>
 </template>

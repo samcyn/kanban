@@ -13,3 +13,11 @@ export const DEFAULT_BOARD_ACTIONS: Mode_Type = {
   view: 'VIEW_BOARD_MODE',
   delete: 'DELETE_BOARD_MODE'
 };
+
+// TODO - add features to edit and delete column
+export const DEFAULT_COLUMN_ACTIONS: Mode_Type = {
+  add: 'ADD_COLUMN_MODE',
+  edit: 'EDIT_COLUMN_MODE',
+  view: 'VIEW_COLUMN_MODE',
+  delete: 'DELETE_COLUMN_MODE'
+};
