@@ -9,6 +9,7 @@ import { useField } from 'vee-validate';
 
 interface Props
 	extends /* @vue-ignore */ InputHTMLAttributes {
+	id?: string;
 	label?: string;
 	hasError?: boolean;
 	htmlType?: 'input' | 'textarea';
@@ -62,7 +63,7 @@ const showError = computed(
 	<div class="relative flex flex-col">
 		<label
 			v-if="label"
-			:for="props.id"
+			:for="id"
 			class="label mb-2 font-bold text-grey-100 dark:text-white block"
 			>{{ label }}</label
 		>
@@ -76,6 +77,7 @@ const showError = computed(
 			"
 			:value="value"
 			:name="name"
+			:id="id"
 			@input="handleChange"
 			@blur="handleBlur"
 		/>

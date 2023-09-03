@@ -1,26 +1,62 @@
 <script lang="ts" setup>
+import * as yup from 'yup';
+
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
+import AppForm from '@/components/shared/AppForm/index.vue';
+import { FieldArray } from 'vee-validate';
 
 import {
 	useQueryMode,
 	useQueryParams,
 } from '@/hooks/useQueryParams';
 import { DEFAULT_BOARD_ACTIONS } from '@/constants/queryParamsModes';
+import { UseFormProps } from '@/models/form';
+import { IBoard } from '@/models';
+import { useBoardStore } from '@/store/useBoardStore';
 
 const { onUpdateQuery } = useQueryParams();
 const { isAddMode, isEditMode } = useQueryMode(
 	DEFAULT_BOARD_ACTIONS,
 	'board'
 );
+const boardStore = useBoardStore();
+
+const { onCreateBoard } = boardStore;
 
 const onHideBoard = () => {
 	onUpdateQuery({
 		taskId: undefined,
 		entity_mode: undefined,
 	});
+};
+
+const formOptions: UseFormProps<IBoard> = {
+	validationSchema: yup.object({
+		name: yup.string().required("can't be empty"),
+	}),
+	initialValues: {
+		id: '',
+		name: '',
+		columns: [
+			{
+				id: '1',
+				label: '#000000',
+				name: '',
+				tasks: [],
+			},
+		],
+	},
+	async onSubmit(values) {
+		try {
+			await onCreateBoard(values);
+			onHideBoard();
+		} catch (err) {
+			console.log(err);
+		}
+	},
 };
 </script>
 <template>
@@ -40,91 +76,68 @@ const onHideBoard = () => {
 						: 'Edit Board'
 				}}
 			</p>
-			<form class="flex flex-col gap-6">
+			<app-form
+				class="flex flex-col gap-6"
+				v-bind="formOptions"
+			>
 				<app-input
 					label="Board Name"
+					name="name"
 					placeholder="e.g. Web Design"
 				/>
-				<fieldset>
-					<p
-						class="text-grey-100 dark:text-white text-small font-bold mb-2"
-					>
-						Board Columns
-					</p>
-					<!-- overflow scroll -->
-					<div
-						class="flex flex-col gap-3 max-h-[92px] overflow-y-auto mb-3"
-					>
-						<div class="flex items-center gap-4">
-							<div class="flex-1">
-								<app-input placeholder="Todo" />
+				<!-- use field array here -->
+				<field-array
+					name="columns"
+					v-slot="{ fields, push, remove }"
+				>
+					<fieldset>
+						<p
+							class="text-grey-100 dark:text-white text-small font-bold mb-2"
+						>
+							Board Columns
+						</p>
+						<!-- overflow scroll -->
+						<div
+							class="flex flex-col gap-3 max-h-[92px] overflow-y-auto mb-3"
+						>
+							<div
+								v-for="(entry, idx) in fields"
+								class="flex items-center gap-4"
+								:key="entry.key"
+							>
+								<div class="flex-1">
+									<app-input
+										:name="`columns[${idx}].name`"
+										placeholder="Todo"
+									/>
+								</div>
+								<app-icon-button
+									class-name="text-grey-100"
+									width="15"
+									height="15"
+									viewBox="0 0 15 15"
+									icon="close"
+									@click="remove(idx)"
+								/>
 							</div>
-							<app-icon-button
-								class-name="text-grey-100"
-								width="15"
-								height="15"
-								viewBox="0 0 15 15"
-								icon="close"
-							/>
 						</div>
-						<!-- todo take off -->
-						<div class="flex items-center gap-4">
-							<div class="flex-1">
-								<app-input placeholder="Todo" />
-							</div>
-							<app-icon-button
-								class-name="text-grey-100"
-								width="15"
-								height="15"
-								viewBox="0 0 15 15"
-								icon="close"
-							/>
-						</div>
-						<div class="flex items-center gap-4">
-							<div class="flex-1">
-								<app-input placeholder="Todo" />
-							</div>
-							<app-icon-button
-								class-name="text-grey-100"
-								width="15"
-								height="15"
-								viewBox="0 0 15 15"
-								icon="close"
-							/>
-						</div>
-						<div class="flex items-center gap-4">
-							<div class="flex-1">
-								<app-input placeholder="Todo" />
-							</div>
-							<app-icon-button
-								class-name="text-grey-100"
-								width="15"
-								height="15"
-								viewBox="0 0 15 15"
-								icon="close"
-							/>
-						</div>
-						<div class="flex items-center gap-4">
-							<div class="flex-1">
-								<app-input placeholder="Todo" />
-							</div>
-							<app-icon-button
-								class-name="text-grey-100"
-								width="15"
-								height="15"
-								viewBox="0 0 15 15"
-								icon="close"
-							/>
-						</div>
-						<!-- todo take off ends -->
-					</div>
+					</fieldset>
 					<app-button
 						class="w-full"
 						type="button"
 						variant="secondary"
+						@click="
+							push({
+								id: `${fields.length + 1}`,
+								label: '#000000',
+								name: '',
+								tasks: [],
+							})
+						"
 						>+Add New Column</app-button
 					>
-				</fieldset>
+				</field-array>
+				<!-- end use of field array -->
 				<app-button class="w-full" type="submit">
 					{{
 						isAddMode
@@ -132,7 +145,7 @@ const onHideBoard = () => {
 							: 'Save Changes'
 					}}
 				</app-button>
-			</form>
+			</app-form>
 		</div>
 	</app-modal>
 </template>

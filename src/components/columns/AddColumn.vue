@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useRoute } from 'vue-router';
 
 import AppModal from '@/components/shared/AppModal.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 import AppInput from '@/components/shared/AppInput.vue';
+import AppForm from '@/components/shared/AppForm/index.vue';
 
 import { DEFAULT_COLUMN_ACTIONS } from '@/constants/queryParamsModes';
 import {
@@ -13,6 +13,8 @@ import {
 	useQueryMode,
 } from '@/hooks/useQueryParams';
 import { useColumnStore } from '@/store/useColumnStore';
+import { UseFormProps } from '@/models/form';
+import { IColumn } from '@/models';
 
 const route = useRoute();
 const ColumnStore = useColumnStore();
@@ -20,7 +22,6 @@ const ColumnStore = useColumnStore();
 const { addColumnToBoard } = ColumnStore;
 
 const { name, label } = route.query;
-
 
 const { onUpdateQuery } = useQueryParams();
 
@@ -34,31 +35,36 @@ const onHide = () => {
 		taskId: undefined,
 		entity_mode: undefined,
 		name: undefined,
-		label: undefined
+		label: undefined,
 	});
 };
 
-const { handleSubmit } = useForm({
+const formOptions: UseFormProps<{
+	name: string;
+	label: string;
+}> = {
 	validationSchema: yup.object({
-		name: yup.string().required('can\'t be empty'),
+		name: yup.string().required("can't be empty"),
 	}),
 	initialValues: {
 		name: (name as string) || '',
 		label: (label as string) || '#000',
 	},
-});
-
-const onSubmit = handleSubmit((values) => {
-	// update query params to contain form fields
-	onUpdateQuery({
-		...values,
-	});
-	addColumnToBoard(route.params.boardId as string, {
-		...values,
-		tasks: []
-	});
-	onHide();
-});
+	async onSubmit(values) {
+		// update query params to contain form fields
+		onUpdateQuery({
+			...values,
+		});
+		await addColumnToBoard(
+			route.params.boardId as string,
+			{
+				...values,
+				tasks: [],
+			} as unknown as IColumn
+		);
+		onHide();
+	},
+};
 </script>
 <template>
 	<app-modal :show="isAddMode" @hide="onHide">
@@ -75,17 +81,20 @@ const onSubmit = handleSubmit((values) => {
 			>
 				Add New Column to this board
 			</p>
-			<form
+			<app-form
 				class="flex flex-col gap-4"
-				@submit="onSubmit"
+				v-bind="formOptions"
 			>
 				<div class="flex flex-col gap-6 mb-6">
 					<app-input
+						id="column_name"
 						label="Column Name"
 						name="name"
 						type="text"
+						autocomplete="none"
 					/>
 					<app-input
+						id="column_color_code"
 						label="Column Color Code"
 						name="label"
 						type="color"
@@ -108,7 +117,7 @@ const onSubmit = handleSubmit((values) => {
 						>Cancel</app-button
 					>
 				</div>
-			</form>
+			</app-form>
 		</div>
 	</app-modal>
 </template>

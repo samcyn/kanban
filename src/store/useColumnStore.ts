@@ -47,7 +47,7 @@ export const useColumnStore = defineStore('ColumnProvider', () => {
     });
 
     try {
-      await boardService.addColumnsToBoard(boardId, col);
+      await boardService.addColumnsToBoard(boardId, record);
     } catch (err) {
       logger.log(err);
       // if it fails reverse the optimistic ui process

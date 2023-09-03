@@ -21,7 +21,30 @@ export const useBoardStore = defineStore('BoardProvider', () => {
     }
   });
 
+  const onCreateBoard = async (board: IBoard) => {
+    // create a temporary id
+    const elementId = String(Date.now());
+
+    // existing boards
+    const activeBoards = boards.value;
+
+    const record: IBoard = {
+      ...board,
+      id: elementId,
+    };
+    // set up optimistic ui
+    boards.value = [...activeBoards, record];
+    try {
+      await boardService.createNewBoard(record);
+    } catch (err) {
+      logger.log(err);
+      // if it fails reverse the optimistic ui process
+      boards.value = [...activeBoards, record];
+    }
+  }
+
   return {
     boards,
+    onCreateBoard
   };
 })
