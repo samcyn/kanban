@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 import { IBoard } from '@/models';
 
 import BoardService from '@/services/BoardService';
+import { logger } from '@/utils/logger';
 
 export const useBoardStore = defineStore('BoardProvider', () => {
   const boardService = new BoardService();
@@ -15,7 +16,7 @@ export const useBoardStore = defineStore('BoardProvider', () => {
         const response = await boardService.getBoards();
         boards.value = response.data;
       } catch (err) {
-        console.log(err, 122);
+        logger.error(err);
       }
     }
   });

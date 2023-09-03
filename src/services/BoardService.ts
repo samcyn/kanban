@@ -36,4 +36,12 @@ export default class BoardService extends HttpClient {
       }, 1000);
     });
   }
+
+  public addColumnsToBoard(_boardId: string, _column: IColumn): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+  }
 }

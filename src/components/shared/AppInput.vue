@@ -1,46 +1,62 @@
 <script setup lang="ts">
 import {
-	Events,
+	computed,
 	defineComponent,
 	h,
 	InputHTMLAttributes,
 } from 'vue';
+import { useField } from 'vee-validate';
 
 interface Props
 	extends /* @vue-ignore */ InputHTMLAttributes {
 	label?: string;
-	errorMessage?: string;
 	hasError?: boolean;
-	type?: 'input' | 'textarea';
+	htmlType?: 'input' | 'textarea';
 	rows?: number;
 	modelValue?: string;
+	name?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	hasError: false,
-	errorMessage: "can't be empty",
 	variant: 'default',
-	type: 'input',
+	htmlType: 'input',
 	required: false,
 });
 
-const emit = defineEmits<{
-	(event: 'update:modelValue', val: string): void;
+defineEmits<{
+	(
+		event: 'update:modelValue',
+		val: unknown
+	): void;
 }>();
+
 defineOptions({ inheritAttrs: false });
 
 const InputElem = defineComponent({
 	render() {
-		return h(props.type);
+		return h(props.htmlType);
 	},
 });
 
-const onInput = (e: Events['onInput']) => {
-	emit(
-		'update:modelValue',
-		(e.target as HTMLInputElement).value
-	);
-};
+const {
+	value,
+	errorMessage,
+	handleBlur,
+	handleChange,
+} = useField(
+	() => props.name as string,
+	undefined,
+	{
+		syncVModel: true,
+	}
+);
+
+const showError = computed(
+	() =>
+		props.hasError ||
+		(errorMessage && !!errorMessage.value)
+);
 </script>
 <template>
 	<div class="relative flex flex-col">
@@ -52,22 +68,19 @@ const onInput = (e: Events['onInput']) => {
 		>
 		<InputElem
 			v-bind="$attrs"
-			class="input ring-1 ring-inset 
-				transition outline-none px-4 text-black-100
-				 dark:text-white tracking-normal font-medium
-				  ring-grey-100/25 hover:ring-purple bg-transparent
-					 placeholder:text-black-100 dark:placeholder:text-white 
-					 placeholder:opacity-25 rounded w-full"
+			class="input ring-1 ring-inset transition outline-none px-4 text-black-100 dark:text-white tracking-normal font-medium ring-grey-100/25 hover:ring-purple bg-transparent placeholder:text-black-100 dark:placeholder:text-white placeholder:opacity-25 rounded w-full"
 			:class="
-				hasError
+				showError
 					? 'ring-red-100 pr-32'
 					: 'ring-grey-100/25'
 			"
-			:value="modelValue"
-			@input="onInput"
+			:value="value"
+			:name="name"
+			@input="handleChange"
+			@blur="handleBlur"
 		/>
 		<div
-			v-if="hasError"
+			v-if="showError"
 			class="errorMessage text-red-100 absolute bottom-0 right-0 px-4 font-medium w-32"
 		>
 			{{ errorMessage }}

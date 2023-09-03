@@ -13,7 +13,7 @@ export const useQueryParams = () => {
   const route = useRoute();
   const router = useRouter();
 
-  const onUpdateQuery = (query: QueryType) => {
+  const onUpdateQuery = <T = QueryType>(query: T) => {
     const queries = route.query;
     router.replace({
       query: {
@@ -28,7 +28,7 @@ export const useQueryParams = () => {
   };
 }
 
-export const useQueryMode = (props?: Mode_Type, which: 'board' | 'task' = 'task') => {
+export const useQueryMode = (props?: Mode_Type, which: 'board' | 'task' | 'column' = 'task') => {
   const route = useRoute();
   const modes = reactive({
     isAddMode: false,

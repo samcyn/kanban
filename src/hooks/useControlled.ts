@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import {
   reactive,
   ref,
@@ -19,9 +20,8 @@ const useControlled = <T>(props: {
 
   const isControlled = ref(controlled?.value !== undefined);
 
-  if (import.meta.env.MODE === 'development') {
-    console.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component:-${props.componentName || 'UnknownComponent'}`)
-  }
+  logger.info(`component is ${isControlled.value ? 'controlled' : 'uncontrolled'} component:-${props.componentName || 'UnknownComponent'}`)
+
   const localState = ref<T>(defaultProp?.value);
   const value = isControlled.value ? controlled : localState;
 

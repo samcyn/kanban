@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import {
 	onBeforeRouteUpdate,
 	useRoute,
 } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 import AppIcon from '@/components/shared/AppIcon.vue';
 import AppButton from '@/components/shared/AppButton.vue';
@@ -16,37 +17,36 @@ import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 import AppDeleteBoard from '@/components/boards/AppDeleteBoard.vue';
 import AddColumn from '@/components/columns/AddColumn.vue';
 
-import BoardService from '@/services/BoardService';
-import { IColumn } from '@/models';
+import { useColumnStore } from '@/store/useColumnStore';
+import { logger } from '@/utils/logger';
 
-const loading = ref(false);
-const columns = ref<IColumn[]>([]);
 const route = useRoute();
-const boardService = new BoardService();
+const ColumnStore = useColumnStore();
+const loading = ref(false);
 
-const isEmptyColumns = computed(
-	() => columns.value.length === 0
-);
+const { activeColumns, isEmptyColumns } =
+	storeToRefs(ColumnStore);
 
-const getColumns = async (id: string) => {
+const { getActiveColumnsInABoard } = ColumnStore;
+
+const handleRequest = async (id: string) => {
 	loading.value = true;
 	try {
-		const response =
-			await boardService.getColumnsInBoards(id);
-		columns.value = response.data;
+		await getActiveColumnsInABoard(id);
 		loading.value = false;
 	} catch (err) {
-		console.error(err);
+		logger.error(err);
+		loading.value = false;
 	}
 };
 
 onMounted(() => {
-	getColumns(route.params.boardId as string);
+	handleRequest(route.params.boardId as string);
 });
 
 onBeforeRouteUpdate((to, from) => {
 	if (to.params.boardId !== from.params.boardId) {
-		getColumns(to.params.boardId as string);
+		handleRequest(to.params.boardId as string);
 	}
 });
 </script>
@@ -95,7 +95,7 @@ onBeforeRouteUpdate((to, from) => {
 					class="flex gap-6 h-full"
 				>
 					<app-column
-						v-for="column in columns"
+						v-for="column in activeColumns"
 						:key="column.id"
 						v-bind="column"
 					/>

@@ -11,6 +11,7 @@ defineProps</* @vue-ignore */ IColumn>();
 	<div
 		role="listitem"
 		class="columns w-70 basis-70 shrink-0 grow-0 h-full relative"
+		:id="id"
 	>
 		<columns-header
 			:title="name"
