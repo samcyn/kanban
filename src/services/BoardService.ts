@@ -30,6 +30,25 @@ export default class BoardService extends HttpClient {
     });
   }
 
+  public getOneBoard(boardId: string): Promise<{ data: IBoard }> {
+    const board_sample = localStorage.getItem('BOARDS_SAMPLE');
+    const extractedBoards = JSON.parse(board_sample ? board_sample : '[]') as IBoard[];
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const board = extractedBoards.find(board => board.id === boardId);
+        if(board) {
+          resolve({
+            data: board
+          });
+        } else{
+          reject({
+            data: 'board not found'
+          })
+        }
+      }, 1000);
+    });
+  }
+
   public getColumnsInBoards(boardId: string): Promise<{ data: IColumn[] }> {
     const board_sample = localStorage.getItem('BOARDS_SAMPLE');
     return new Promise((resolve, _) => {

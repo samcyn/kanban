@@ -18,10 +18,14 @@ import AppDeleteBoard from '@/components/boards/AppDeleteBoard.vue';
 import AddColumn from '@/components/columns/AddColumn.vue';
 
 import { useColumnStore } from '@/store/useColumnStore';
+import { useQueryParams } from '@/hooks/useQueryParams';
 import { logger } from '@/utils/logger';
+import { DEFAULT_COLUMN_ACTIONS } from '@/constants/queryParamsModes';
 
 const route = useRoute();
 const ColumnStore = useColumnStore();
+const { onUpdateQuery } = useQueryParams();
+
 const loading = ref(false);
 
 const { activeColumns, isEmptyColumns } =
@@ -49,6 +53,13 @@ onBeforeRouteUpdate((to, from) => {
 		handleRequest(to.params.boardId as string);
 	}
 });
+
+const onClick = () => {
+	onUpdateQuery({
+		taskId: undefined,
+		entity_mode: DEFAULT_COLUMN_ACTIONS.add,
+	});
+};
 </script>
 <template>
 	<div
@@ -78,6 +89,7 @@ onBeforeRouteUpdate((to, from) => {
 				<app-button
 					class="flex items-center justify-center gap-1"
 					size="large"
+					@click="onClick"
 				>
 					<app-icon
 						icon="plus"

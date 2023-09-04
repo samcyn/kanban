@@ -9,7 +9,7 @@ import {
 } from 'vee-validate';
 
 import { UseFormProps } from '@/models/form';
-import { toRefs } from 'vue';
+import { toRefs, watch } from 'vue';
 
 /* @vue-ignore */
 const props =
@@ -41,6 +41,7 @@ const {
 	resetForm,
 	handleSubmit,
 	setErrors,
+	setValues
 } = useForm({
 	validationSchema: validationSchema?.value,
 	initialValues: initialValues?.value,
@@ -48,6 +49,10 @@ const {
 	initialTouched: initialTouched?.value,
 	validateOnMount: validateOnMount?.value,
 	keepValuesOnUnmount: keepValuesOnUnmount?.value,
+});
+
+watch(() => initialValues?.value, (a) => {
+	setValues(a);
 });
 
 const onSubmit = handleSubmit(
@@ -72,6 +77,7 @@ const onSubmit = handleSubmit(
 			:resetForm="resetForm"
 			:handleSubmit="handleSubmit"
 			:setErrors="setErrors"
+			:setValues="setValues"
 		/>
 	</form>
 </template>

@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue';
+import {
+	onBeforeRouteUpdate,
+	useRoute,
+} from 'vue-router';
 import * as yup from 'yup';
 
 import AppModal from '@/components/shared/AppModal.vue';
@@ -16,15 +21,48 @@ import { DEFAULT_BOARD_ACTIONS } from '@/constants/queryParamsModes';
 import { UseFormProps } from '@/models/form';
 import { IBoard } from '@/models';
 import { useBoardStore } from '@/store/useBoardStore';
+import BoardService from '@/services/BoardService';
+import { logger } from '@/utils/logger';
 
+const boardService = new BoardService();
+
+const currentBoard = ref<IBoard>({
+	id: '',
+	name: '',
+	columns: [{
+		id: '1',
+		name: '',
+		tasks: []
+	}],
+});
+
+const query = useRoute();
 const { onUpdateQuery } = useQueryParams();
 const { isAddMode, isEditMode } = useQueryMode(
 	DEFAULT_BOARD_ACTIONS,
 	'board'
 );
-const boardStore = useBoardStore();
 
+const boardStore = useBoardStore();
 const { onCreateBoard } = boardStore;
+
+const handleGetBoard = async (id: string) => {
+	try {
+		const response =
+			await boardService.getOneBoard(id);
+		currentBoard.value = response.data;
+	} catch (err) {
+		logger.error(err);
+	}
+};
+
+onMounted(() => {
+	handleGetBoard(query.params.boardId as string);
+});
+
+onBeforeRouteUpdate((to) => {
+	handleGetBoard(to.params.boardId as string);
+});
 
 const onHideBoard = () => {
 	onUpdateQuery({
@@ -33,21 +71,22 @@ const onHideBoard = () => {
 	});
 };
 
-const formOptions: UseFormProps<IBoard> = {
+const formOptions = computed<UseFormProps<IBoard>>(() => ({
 	validationSchema: yup.object({
 		name: yup.string().required("can't be empty"),
+		columns: yup
+			.array()
+			.of(
+				yup.object().shape({
+					name: yup
+						.string()
+						.required("can't be empty"),
+				})
+			)
+			.strict(),
 	}),
 	initialValues: {
-		id: '',
-		name: '',
-		columns: [
-			{
-				id: '1',
-				label: '#000000',
-				name: '',
-				tasks: [],
-			},
-		],
+		...currentBoard.value
 	},
 	async onSubmit(values) {
 		try {
@@ -57,7 +96,7 @@ const formOptions: UseFormProps<IBoard> = {
 			console.log(err);
 		}
 	},
-};
+}))
 </script>
 <template>
 	<app-modal
