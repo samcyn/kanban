@@ -7,16 +7,20 @@ import BoardService from '@/services/BoardService';
 import { logger } from '@/utils/logger';
 
 export const useBoardStore = defineStore('BoardProvider', () => {
+  const systemIsBusy = ref(false);
   const boardService = new BoardService();
   const boards = ref<IBoard[]>([]);
 
   onMounted(async () => {
     if (boards.value.length === 0) {
+      systemIsBusy.value = true;
       try {
         const response = await boardService.getBoards();
         boards.value = response.data;
+        systemIsBusy.value = false;
       } catch (err) {
         logger.error(err);
+        systemIsBusy.value = false;
       }
     }
   });
@@ -44,6 +48,7 @@ export const useBoardStore = defineStore('BoardProvider', () => {
   }
 
   return {
+    systemIsBusy,
     boards,
     onCreateBoard
   };

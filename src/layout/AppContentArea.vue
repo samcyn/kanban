@@ -16,6 +16,7 @@ import AppDeleteTask from '@/components/tasks/AppDeleteTask.vue';
 import AppBoardForm from '@/components/boards/AppBoardForm.vue';
 import AppDeleteBoard from '@/components/boards/AppDeleteBoard.vue';
 import AddColumn from '@/components/columns/AddColumn.vue';
+import AppActivityIndicator from '@/components/shared/AppActivityIndicator/index.vue';
 
 import { useColumnStore } from '@/store/useColumnStore';
 import { useQueryParams } from '@/hooks/useQueryParams';
@@ -62,60 +63,55 @@ const onClick = () => {
 };
 </script>
 <template>
-	<div
-		class="contentArea relative pt-6 pb-6 md:pb-50px"
-	>
-		<!-- loader -->
+	<app-activity-indicator :loading="loading && !isEmptyColumns">
 		<div
-			v-if="loading"
-			class="absolute inset-0 w-full h-full bg-white/80 dark:bg-black-300/80 z-1"
+			class="contentArea relative pt-6 pb-6 md:pb-50px"
 		>
-			loading
-		</div>
-		<div
-			class="px-4 md:px-6 overflow-auto h-full"
-		>
-			<!-- if no columns, display this -->
 			<div
-				class="empty text-center flex flex-col justify-center items-center relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-				v-if="isEmptyColumns"
+				class="px-4 md:px-6 overflow-auto h-full"
 			>
-				<p
-					class="empty__title mb-6 text-grey-100"
-				>
-					This board is empty. Create a new column
-					to get started.
-				</p>
-				<app-button
-					class="flex items-center justify-center gap-1"
-					size="large"
-					@click="onClick"
-				>
-					<app-icon
-						icon="plus"
-						width="12"
-						height="12"
-					/>
-					Add New Column
-				</app-button>
-			</div>
-			<!-- display columns -->
-			<div v-else class="min-h-fit">
-				<!-- columns rows -->
+				<!-- if no columns, display this -->
 				<div
-					role="list"
-					class="flex gap-6 h-full"
+					class="empty text-center flex flex-col justify-center items-center relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+					v-if="isEmptyColumns"
 				>
-					<app-column
-						v-for="column in activeColumns"
-						:key="column.id"
-						v-bind="column"
-					/>
-					<app-column-button />
+					<p
+						class="empty__title mb-6 text-grey-100"
+					>
+						This board is empty. Create a new
+						column to get started.
+					</p>
+					<app-button
+						class="flex items-center justify-center gap-1"
+						size="large"
+						@click="onClick"
+					>
+						<app-icon
+							icon="plus"
+							width="12"
+							height="12"
+						/>
+						Add New Column
+					</app-button>
+				</div>
+				<!-- display columns -->
+				<div v-else class="min-h-fit">
+					<!-- columns rows -->
+					<div
+						role="list"
+						class="flex gap-6 h-full"
+					>
+						<app-column
+							v-for="column in activeColumns"
+							:key="column.id"
+							v-bind="column"
+						/>
+						<app-column-button />
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</app-activity-indicator>
 	<!-- MANAGE TASK FORMS/MODALS HERE -->
 	<app-view-task />
 	<app-task-form />

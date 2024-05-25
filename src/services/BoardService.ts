@@ -3,6 +3,7 @@
 import HttpClient from '@/services/index.ts';
 
 import { boards } from '@/.data/data.json';
+// todo use dynamic import - await import("@/.data/data.json").default
 import { IBoard, IColumn } from '@/models';
 
 export default class BoardService extends HttpClient {

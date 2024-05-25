@@ -1,17 +1,23 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import {
+	computed,
+	onMounted,
+	ref,
+	nextTick,
+} from 'vue';
 import {
 	onBeforeRouteUpdate,
 	useRoute,
 } from 'vue-router';
 import * as yup from 'yup';
+import { FieldArray } from 'vee-validate';
 
 import AppModal from '@/components/shared/AppModal.vue';
 import AppInput from '@/components/shared/AppInput.vue';
 import AppIconButton from '@/components/shared/AppIconButton.vue';
 import AppButton from '@/components/shared/AppButton.vue';
 import AppForm from '@/components/shared/AppForm/index.vue';
-import { FieldArray } from 'vee-validate';
+import AppActivityIndicator from '@/components/shared/AppActivityIndicator/index.vue';
 
 import {
 	useQueryMode,
@@ -29,11 +35,13 @@ const boardService = new BoardService();
 const currentBoard = ref<IBoard>({
 	id: '',
 	name: '',
-	columns: [{
-		id: '1',
-		name: '',
-		tasks: []
-	}],
+	columns: [
+		{
+			id: '1',
+			name: '',
+			tasks: [],
+		},
+	],
 });
 
 const query = useRoute();
@@ -47,12 +55,14 @@ const boardStore = useBoardStore();
 const { onCreateBoard } = boardStore;
 
 const handleGetBoard = async (id: string) => {
-	try {
-		const response =
-			await boardService.getOneBoard(id);
-		currentBoard.value = response.data;
-	} catch (err) {
-		logger.error(err);
+	if (isEditMode.value) {
+		try {
+			const response =
+				await boardService.getOneBoard(id);
+			currentBoard.value = response.data;
+		} catch (err) {
+			logger.error(err);
+		}
 	}
 };
 
@@ -65,13 +75,28 @@ onBeforeRouteUpdate((to) => {
 });
 
 const onHideBoard = () => {
+	nextTick(() => {
+		currentBoard.value = {
+			id: '',
+			name: '',
+			columns: [
+				{
+					id: '1',
+					name: '',
+					tasks: [],
+				},
+			],
+		};
+	});
 	onUpdateQuery({
 		taskId: undefined,
 		entity_mode: undefined,
 	});
 };
 
-const formOptions = computed<UseFormProps<IBoard>>(() => ({
+const formOptions = computed<
+	UseFormProps<IBoard>
+>(() => ({
 	validationSchema: yup.object({
 		name: yup.string().required("can't be empty"),
 		columns: yup
@@ -86,7 +111,7 @@ const formOptions = computed<UseFormProps<IBoard>>(() => ({
 			.strict(),
 	}),
 	initialValues: {
-		...currentBoard.value
+		...currentBoard.value,
 	},
 	async onSubmit(values) {
 		try {
@@ -96,7 +121,7 @@ const formOptions = computed<UseFormProps<IBoard>>(() => ({
 			console.log(err);
 		}
 	},
-}))
+}));
 </script>
 <template>
 	<app-modal
@@ -106,85 +131,93 @@ const formOptions = computed<UseFormProps<IBoard>>(() => ({
 		<div
 			class="card bg-white dark:bg-black-300 p-6 md:p-8 rounded-md m-auto md:max-w-[480px]"
 		>
-			<p
-				class="text-black-100 dark:text-white text-middle font-bold mb-6"
-			>
-				{{
-					isAddMode
-						? 'Add New Board'
-						: 'Edit Board'
-				}}
-			</p>
-			<app-form
-				class="flex flex-col gap-6"
-				v-bind="formOptions"
-			>
-				<app-input
-					label="Board Name"
-					name="name"
-					placeholder="e.g. Web Design"
-				/>
-				<!-- use field array here -->
-				<field-array
-					name="columns"
-					v-slot="{ fields, push, remove }"
+			<app-activity-indicator message="Processing, Please wait..." loading>
+				<p
+					class="text-black-100 dark:text-white text-middle font-bold mb-6"
 				>
-					<fieldset>
-						<p
-							class="text-grey-100 dark:text-white text-small font-bold mb-2"
-						>
-							Board Columns
-						</p>
-						<!-- overflow scroll -->
-						<div
-							class="flex flex-col gap-3 max-h-[92px] overflow-y-auto mb-3"
-						>
-							<div
-								v-for="(entry, idx) in fields"
-								class="flex items-center gap-4"
-								:key="entry.key"
-							>
-								<div class="flex-1">
-									<app-input
-										:name="`columns[${idx}].name`"
-										placeholder="Todo"
-									/>
-								</div>
-								<app-icon-button
-									class-name="text-grey-100"
-									width="15"
-									height="15"
-									viewBox="0 0 15 15"
-									icon="close"
-									@click="remove(idx)"
-								/>
-							</div>
-						</div>
-					</fieldset>
-					<app-button
-						class="w-full"
-						type="button"
-						variant="secondary"
-						@click="
-							push({
-								id: `${fields.length + 1}`,
-								label: '#000000',
-								name: '',
-								tasks: [],
-							})
-						"
-						>+Add New Column</app-button
-					>
-				</field-array>
-				<!-- end use of field array -->
-				<app-button class="w-full" type="submit">
 					{{
 						isAddMode
-							? 'Create New Board'
-							: 'Save Changes'
+							? 'Add New Board'
+							: 'Edit Board'
 					}}
-				</app-button>
-			</app-form>
+				</p>
+				<app-form
+					class="flex flex-col gap-6"
+					v-bind="formOptions"
+				>
+					<app-input
+						label="Board Name"
+						name="name"
+						id="board_name_id"
+						placeholder="e.g. Web Design"
+						autocomplete="off"
+					/>
+					<!-- use field array here -->
+					<field-array
+						name="columns"
+						v-slot="{ fields, push, remove }"
+					>
+						<fieldset>
+							<p
+								class="text-grey-100 dark:text-white text-small font-bold mb-2"
+							>
+								Board Columns
+							</p>
+							<!-- overflow scroll -->
+							<div
+								class="flex flex-col gap-3 max-h-[92px] overflow-y-auto mb-3"
+							>
+								<div
+									v-for="(entry, idx) in fields"
+									class="flex items-center gap-4"
+									:key="entry.key"
+								>
+									<div class="flex-1">
+										<app-input
+											:name="`columns[${idx}].name`"
+											:aria-label="`board columns ${idx}`"
+											placeholder="Todo"
+										/>
+									</div>
+									<app-icon-button
+										class-name="text-grey-100"
+										width="15"
+										height="15"
+										viewBox="0 0 15 15"
+										icon="close"
+										@click="remove(idx)"
+									/>
+								</div>
+							</div>
+						</fieldset>
+						<app-button
+							class="w-full"
+							type="button"
+							variant="secondary"
+							@click="
+								push({
+									id: `${fields.length + 1}`,
+									label: '#000000',
+									name: '',
+									tasks: [],
+								})
+							"
+							>+Add New Column</app-button
+						>
+					</field-array>
+					<!-- end use of field array -->
+					<app-button
+						class="w-full"
+						type="submit"
+					>
+						{{
+							isAddMode
+								? 'Create New Board'
+								: 'Save Changes'
+						}}
+					</app-button>
+				</app-form>
+			</app-activity-indicator>
 		</div>
 	</app-modal>
 </template>

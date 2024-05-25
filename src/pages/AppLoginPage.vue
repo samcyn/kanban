@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import AppDropdown from '@/components/shared/AppDropdown/index.vue';
 import AppSelectDropDown from '@/components/shared/AppSelectDropDown/index.vue'
+import AppTable from '@/components/shared/AppTable/index.vue';
 
 const selectedOptionValue = ref('option1');
 const options = [
@@ -45,4 +46,5 @@ const options = [
 		/>
 	</app-dropdown>
 	<app-select-drop-down v-model:model-value="selectedOptionValue" :options="options" />
+	<app-table />
 </template>
