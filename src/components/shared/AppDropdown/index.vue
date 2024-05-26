@@ -47,15 +47,17 @@ const {
 	visible,
 } = toRefs(props);
 
-const [show, setShow] = useControlled<boolean>({
+const [show, setShow] = useControlled<
+	boolean | undefined
+>({
 	controlled: visible,
-	componentName: 'AppDropdown'
+	componentName: 'AppDropdown',
 });
 
 const emit = defineEmits<{
 	(
 		event: 'update:modelValue',
-		value: unknown,
+		value: any,
 		text: string | number
 	): void;
 	(event: 'update:visible', value: boolean): void;

@@ -16,7 +16,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(event: 'onPageChange', num: number): void;
+	(event: 'onPageChange', num: number|string): void;
 }>();
 
 const { paginationRange } = usePagination(props);

@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import AppPagination from '@/components/shared/AppPagination/index.vue';
 
-const cats = ref([]);
+const cats = ref<Record<string, any>[]>([]);
 const currentSort = ref('name');
 const currentSortDir = ref('asc');
 const pageSize = ref(1);
@@ -55,8 +55,8 @@ const sortedCats = computed(() => {
 		});
 });
 
-const onSetCurrentPage = (val: number) => {
-	currentPage.value = val;
+const onSetCurrentPage = (val: number|string) => {
+	currentPage.value = Number(val);
 };
 </script>
 <template>

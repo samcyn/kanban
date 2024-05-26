@@ -1,12 +1,13 @@
 import { mount } from '@vue/test-utils';
 import { ref } from 'vue';
+import { describe, it, expect } from 'vitest';
 import useControlled from './useControlled'; // Adjust the path to your composable
 
 describe('useControlled', () => {
   it('handles controlled state', async () => {
     const modelValue = ref('controlled');
-    const [value, setValue] = useControlled({
-      modelValue,
+    const [value, setValue] = useControlled<string>({
+      controlled: modelValue,
       default: 'default',
     });
 
@@ -17,7 +18,10 @@ describe('useControlled', () => {
   });
 
   it('handles uncontrolled state', async () => {
+    const modelValue = ref();
+
     const [value, setValue] = useControlled({
+      controlled: modelValue,
       default: 'default',
     });
 
@@ -28,7 +32,9 @@ describe('useControlled', () => {
   });
 
   it('emits update:modelValue for uncontrolled state', async () => {
+    const modelValue = ref();
     const [value, setValue] = useControlled({
+      controlled: modelValue,
       default: 'default',
     });
 
