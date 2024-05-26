@@ -1,9 +1,7 @@
-interface Prop extends Console { }
+class Logger<T extends Console> {
+  private carrier: T;
 
-class Logger {
-  private carrier: Prop;
-
-  constructor(carrier: Prop) {
+  constructor(carrier: T) {
     this.carrier = carrier;
   }
 
